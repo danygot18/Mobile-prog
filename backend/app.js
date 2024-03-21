@@ -14,14 +14,14 @@ app.options("*", cors());
 //middleware
 app.use(express.json());
 app.use(morgan('tiny'));
-app.use(authJwt());
+
 app.use(errorHandler);
 app.use("/public/uploads", express.static(__dirname + "/public/uploads"));
 
 const usersRoutes = require("./routes/user");
 
 
-app.use(`/api/v1/user`, usersRoutes);
+app.use(`/api/v1/users`, usersRoutes);
 
 module.exports = app;
 
