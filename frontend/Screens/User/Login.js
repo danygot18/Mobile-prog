@@ -32,7 +32,7 @@ const Login = ({ navigation }) => {
         authenticate(data)
         // setLoader(false)
 
-        navigation.navigate('Home');
+        navigation.navigate('UserProfile');
 
     } catch (err) {
         console.log(err)
@@ -44,7 +44,7 @@ const Login = ({ navigation }) => {
             text1: err?.response?.data?.message || 'Please try again later',
         });
     }
-    console.log(values)
+    
 }
 
 const handleSubmit = () => {

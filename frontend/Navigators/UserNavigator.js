@@ -10,6 +10,13 @@ const Stack = createStackNavigator();
 const UserNavigator = (props) => {
     return (
         <Stack.Navigator>
+            <Stack.Screen 
+            name="UserProfile"
+            component={UserProfile}
+            options={{
+                headerShown: false
+            }} />
+            
             <Stack.Screen
                 name="Login"
                 component={Login}
@@ -25,6 +32,7 @@ const UserNavigator = (props) => {
                     headerShown: false
                 }}
             />
+            
 
             
         </Stack.Navigator>
