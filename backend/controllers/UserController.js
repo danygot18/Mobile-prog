@@ -29,7 +29,7 @@ exports.register = async (req, res, next) => {
     }
 }
 
-exports.login = async () => {
+exports.login = async (req,res) => {
 
     try {
 
@@ -63,4 +63,25 @@ exports.login = async () => {
         })
     }
 
+}
+exports.Logout = async (req, res, next) => {
+    res.cookie('token', null, {
+        expires: new Date(Date.now()),
+        httpOnly: true
+    })
+
+    res.status(200).json({
+        success: true,
+        message: 'Logged out'
+    })
+}
+
+exports.Profile = async (req, res, next) => {
+    // console.log(req.header('authorization'))
+    const user = await User.findById(req.user.id);
+
+    res.status(200).json({
+        success: true,
+        user
+    })
 }
