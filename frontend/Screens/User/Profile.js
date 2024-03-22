@@ -44,23 +44,7 @@ const UserProfile = ({ navigation }) => {
         }, [])
     );
 
-    useEffect(() => {
-        // Fetch the image when userProfile is set
-        if (userProfile && !userProfile.imageUrl) {
-            fetchImage();
-        }
-    }, [userProfile]);
-
-    const fetchImage = async () => {
-        try {
-            const imageUrl = `${baseURL}/uploads/${userProfile.image}`;
-            console.log(imageUrl)
-            setUserProfile(prevState => ({ ...prevState, imageUrl }));
-        } catch (error) {
-            console.error(error);
-        }
-        
-    };
+    
 
     const handleLogout = async () => {
         try {
@@ -77,8 +61,8 @@ const UserProfile = ({ navigation }) => {
             <ScrollView contentContainerStyle={styles.subContainer}>
                 <>
                     <Text style={{ fontSize: 30 }}>{userProfile?.name}</Text>
-                    {userProfile?.imageUrl && (
-                        <Image source={{ uri: userProfile.imageUrl }} style={styles.image} />
+                    {userProfile && userProfile?.image && (
+                        <Image source={{ uri: userProfile.image }} style={styles.image} />
 
                     )}
                     <View style={{ marginTop: 20 }}>
