@@ -2,7 +2,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 // import Mains from '../Screens/Mains';
 import HomeNavigator from './Home';
-import  UserNavigator  from './UserNavigator';
+import UserNavigator  from './UserNavigator';
+import AdminNavigator  from './AdminNavigator';
 
 import Register from '../Screens/User/Register';
 import { View, Text, TouchableOpacity } from 'react-native';
@@ -30,6 +31,21 @@ const Main = () => {
                     tabBarIcon: ({color}) => {
                         return <Icon
                             name="home"
+                            style={{position: "relative"}}
+                            color={color}
+                            size={30}
+
+                        />
+                    }
+                }}
+            />
+            <Tab.Screen
+                name="Admin"
+                component={AdminNavigator}
+                options={{
+                    tabBarIcon: ({color}) => {
+                        return <Icon
+                            name="cog"
                             style={{position: "relative"}}
                             color={color}
                             size={30}
