@@ -16,14 +16,7 @@ const UserNavigator = (props) => {
             options={{
                 headerShown: false
             }} />
-            
-            <Stack.Screen
-                name="UserProfile"
-                component={UserProfile}
-                options={{
-                    headerShown: false
-                }}
-            />
+    
 
             <Stack.Screen
                 name="Login"
