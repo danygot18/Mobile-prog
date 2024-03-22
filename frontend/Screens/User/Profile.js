@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, ScrollView, Button, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, Button, Image, StyleSheet } from 'react-native';
 import { Container } from "native-base"
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from "axios"
@@ -42,7 +42,25 @@ const UserProfile = ({ navigation }) => {
             setLoading(false);
             getProfile();
         }, [])
-    )
+    );
+
+    useEffect(() => {
+        // Fetch the image when userProfile is set
+        if (userProfile && !userProfile.imageUrl) {
+            fetchImage();
+        }
+    }, [userProfile]);
+
+    const fetchImage = async () => {
+        try {
+            const imageUrl = `${baseURL}/uploads/${userProfile.image}`;
+            console.log(imageUrl)
+            setUserProfile(prevState => ({ ...prevState, imageUrl }));
+        } catch (error) {
+            console.error(error);
+        }
+        
+    };
 
     const handleLogout = async () => {
         try {
@@ -59,6 +77,10 @@ const UserProfile = ({ navigation }) => {
             <ScrollView contentContainerStyle={styles.subContainer}>
                 <>
                     <Text style={{ fontSize: 30 }}>{userProfile?.name}</Text>
+                    {userProfile?.imageUrl && (
+                        <Image source={{ uri: userProfile.imageUrl }} style={styles.image} />
+
+                    )}
                     <View style={{ marginTop: 20 }}>
                         <Text style={{ margin: 10 }}>Email: {userProfile?.email}</Text>
                         <Text style={{ margin: 10 }}>Phone: {userProfile?.phone}</Text>
@@ -79,10 +101,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 60
     },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+    image: {
+        width: 200,
+        height: 200,
+        borderRadius: 100,
+        marginTop: 20,
     },
 });
 
