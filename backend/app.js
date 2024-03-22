@@ -7,7 +7,6 @@ const authJwt = require('./helpers/jwt');
 const errorHandler = require('./helpers/error-handler');
 require("dotenv/config");
 
-
 app.use(cors());
 app.options("*", cors());
 
@@ -20,10 +19,11 @@ app.use("/public/uploads", express.static(__dirname + "/public/uploads"));
 
 const usersRoutes = require("./routes/user");
 const brandsRoutes = require("./routes/brand");
-    
+const productsRoutes = require("./routes/product");
 
 app.use(`/api/v1/users`, usersRoutes);
 app.use(`/api/v1/brands`, brandsRoutes);
+app.use(`/api/v1/products`, productsRoutes);
 
 module.exports = app;
 
