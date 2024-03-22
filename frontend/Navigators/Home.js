@@ -1,11 +1,22 @@
 import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack'
 import { View, Text, StyleSheet } from 'react-native';
+
+import ProductContainer from "../Screens/Product/ProductContainer";
+const Stack = createStackNavigator();
 
 const Home = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Welcome to Bag Hub</Text>
-      {/* Add more components and styling as needed */}
+      <Stack.Navigator>
+        <Stack.Screen
+          name='Product Container'
+          component={ProductContainer}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack.Navigator>
     </View>
   );
 };
