@@ -45,6 +45,9 @@ const Products = (props) => {
                 <View style={styles.headerItem}>
                     <Text style={{ fontWeight: '600' }}>Price</Text>
                 </View>
+                <View style={styles.headerItem}>
+                    <Text style={{ fontWeight: '600' }}>Desc.</Text>
+                </View>
             </View>
         )
     }
