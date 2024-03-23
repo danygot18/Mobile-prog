@@ -29,7 +29,7 @@ exports.register = async (req, res, next) => {
     }
 }
 
-exports.login = async (req,res) => {
+exports.login = async (req, res) => {
 
     try {
 
@@ -85,3 +85,30 @@ exports.Profile = async (req, res, next) => {
         user
     })
 }
+
+exports.UpdateProfile = async (req, res, next) => {
+    try {
+        const file = req.file;
+        if (file) {
+            const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
+            req.body.image = `${basePath}${file.filename}`;
+
+        }
+
+        const user = await User.findByIdAndUpdate(req.user.id, req.body, {
+            new: true,
+            runValidators: true,
+        });
+
+        if (!user) {
+            return res.status(401).json({ message: 'User Not Updated' });
+        }
+
+        res.status(200).json({
+            success: true
+        });
+    } catch (error) {
+        console.error('Error updating user profile:', error);
+        res.status(500).json({ message: 'Failed to update user profile' });
+    }
+};

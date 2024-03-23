@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import Input from "../../Shared/Form/Input";
 import FormContainer from "../../Shared/Form/FormContainer";
 import { Button } from "native-base";
@@ -37,6 +37,7 @@ const Login = ({ navigation }) => {
     } catch (err) {
         console.log(err)
         // setLoader(false)
+        Alert.alert('Login Error', 'Wrong username and password');
         Toast.show({
             position: 'bottom',
             bottomOffset: 20,

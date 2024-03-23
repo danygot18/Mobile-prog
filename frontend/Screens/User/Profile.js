@@ -70,6 +70,8 @@ const UserProfile = ({ navigation }) => {
                         <Text style={{ margin: 10 }}>Phone: {userProfile?.phone}</Text>
                     </View>
                     <Button title="Logout" onPress={handleLogout} />
+                    <Button title= "Update" onPress= {() => navigation.navigate('UpdateProfile')} />
+                    
                 </>
             </ScrollView>
         </Container>
