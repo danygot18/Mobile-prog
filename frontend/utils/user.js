@@ -17,3 +17,4 @@ export const getToken = () => {
     const token = AsyncStorage.getItem('token');
     return token ? token : null
 }
+
