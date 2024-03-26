@@ -16,6 +16,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as ImagePicker from 'expo-image-picker';
 import { setFormData, setImageUpload } from "../../../utils/formData";
 import { Center, List } from "native-base";
+import { FontAwesome } from '@expo/vector-icons';
+
 
 
 
@@ -141,7 +143,7 @@ const CreateBrand = (navigation) => {
                         <View key={index} style={{ flexDirection: 'row', margin: 7 }}>
                             <Image source={{ uri: image }} style={{ width: 100, height: 100, margin: 5 }} />
                             <TouchableOpacity onPress={() => removeImage(index)}>
-                                <Text style={{ color: 'red', marginLeft: 2, marginTop: 5 }}>Remove</Text>
+                                <FontAwesome name="remove" size={24} color="red" style={{ marginLeft: 6 }} />
                             </TouchableOpacity>
                         </View>
                     ))}
