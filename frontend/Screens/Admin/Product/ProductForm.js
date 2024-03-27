@@ -8,28 +8,31 @@ import {
     Platform
 } from "react-native"
 import { Item, Picker, Select, Box } from "native-base"
-import FormContainer from "../../Shared/Form/FormContainer"
-import Input from "../../Shared/Form/Input"
-import EasyButton from "../../Shared/StyledComponents/EasyButton"
+import FormContainer from "../../../Shared/Form/FormContainer"
+import Input from "../../../Shared/Form/Input"
+import EasyButton from "../../../Shared/StyledComponents/EasyButton"
 
 import Icon from "react-native-vector-icons/FontAwesome"
 import Toast from "react-native-toast-message"
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import baseURL from "../../assets/common/baseUrl"
-import Error from "../../Shared/Error"
+import baseURL from "../../../assets/common/baseUrl"
+import Error from "../../../Shared/Error"
 import axios from "axios"
 import * as ImagePicker from "expo-image-picker"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
 import mime from "mime";
+import { setFormData, setImageUpload } from "../../../utils/formData"
+import { FontAwesome } from '@expo/vector-icons';
 
 
 const ProductForm = (props) => {
     // console.log(props.route.params)
     const [pickerValue, setPickerValue] = useState('');
+    const [products, setProduct] = useState([]);
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
     const [description, setDescription] = useState('');
-    const [image, setImage] = useState('');
+    const [images, setImage] = useState([]);
     const [mainImage, setMainImage] = useState();
     const [brand, setBrand] = useState('');
     const [brands, setBrands] = useState([]);
@@ -93,109 +96,159 @@ const ProductForm = (props) => {
         if (!result.canceled) {
             console.log(result.assets)
             setMainImage(result.assets[0].uri);
-            setImage(result.assets[0].uri);
+            setImage(prevImages => [...prevImages, result.uri]);
         }
     }
-    
+    const removeImage = (index) => {
+        setImage(prevImages => prevImages.filter((_, i) => i !== index));
+    };
 
-    const addProduct = () => {
-        if (
-            name === "" ||
-            price === "" ||
-            description === "" ||
-            brand === "" ||
-            countInStock === ""
-        ) {
-            setError("Please fill in the form correctly")
-        }
 
-        let formData = new FormData();
-        const newImageUri = "file:///" + image.split("file:/").join("");
+    const addProduct = async () => {
 
-        formData.append("name", name);
-        formData.append("price", price);
-        formData.append("description", description);
-        formData.append("brand", brand);
-        formData.append("countInStock", countInStock);
-        formData.append("richDescription", richDescription);
-        formData.append("rating", rating);
-        formData.append("numReviews", numReviews);
-        formData.append("isFeatured", isFeatured);
-        formData.append("image", {
-            uri: newImageUri,
-            type: mime.getType(newImageUri),
-            name: newImageUri.split("/").pop()
-        });
+        const product = {
+            name: name,
+            price: price,
+            description: description,
+            brand: brand,
+            countInStock: countInStock,
+            images: images
+
+        };
+        product.images = await setImageUpload(product.images)
+
+        const formData = await setFormData(product)
 
         const config = {
             headers: {
                 "Content-Type": "multipart/form-data",
-                "Authorization": `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
             }
-        }
-        if (item !== null) {
-            console.log(item)
-            axios
-                .put(`${baseURL}/products/${item.id}`, formData, config)
-                .then((res) => {
-                    if (res.status === 200 || res.status === 201) {
-                        Toast.show({
-                            topOffset: 60,
-                            type: "success",
-                            text1: "Product successfuly updated",
-                            text2: ""
-                        });
-                        setTimeout(() => {
-                            navigation.navigate("Products");
-                        }, 500)
-                    }
-                })
-                .catch((error) => {
-                    Toast.show({
-                        topOffset: 60,
-                        type: "error",
-                        text1: "Something went wrong",
-                        text2: "Please try again"
-                    })
-                })
-        } else {
-            axios
-                .post(`${baseURL}/products`, formData, config)
-                .then((res) => {
-                    if (res.status === 200 || res.status === 201) {
-                        Toast.show({
-                            topOffset: 60,
-                            type: "success",
-                            text1: "New Product added",
-                            text2: ""
-                        });
-                        setTimeout(() => {
-                            navigation.navigate("Products");
-                        }, 500)
-                    }
-                })
-                .catch((error) => {
-                    console.log(error)
-                    Toast.show({
-                        topOffset: 60,
-                        type: "error",
-                        text1: "Something went wrong",
-                        text2: "Please try again"
-                    })
-                })
+        };
 
-        }
+        axios.post(`${baseURL}/products/create`, formData, config)
+            .then((res) => {
+                setProduct([...products, res.data])
+                setName("");
+                setPrice("");
+                setDescription("");
+                setBrand("");
+                setCountInStock("")
+                setRichDescription("");
+                setRating("");
+                setNumReviews("");
+                setImage([])
+                navigation.navigate("Products")
+            })
+            .catch((errror) => console.log(error.response))
+
+        // if (
+        //     name === "" ||
+        //     price === "" ||
+        //     description === "" ||
+        //     brand === "" ||
+        //     countInStock === ""
+        // ) {
+        //     setError("Please fill in the form correctly")
+        // }
+
+        // let formData = new FormData();
+        // const newImageUri = "file:///" + image.split("file:/").join("");
+
+        // formData.append("name", name);
+        // formData.append("price", price);
+        // formData.append("description", description);
+        // formData.append("brand", brand);
+        // formData.append("countInStock", countInStock);
+        // formData.append("richDescription", richDescription);
+        // formData.append("rating", rating);
+        // formData.append("numReviews", numReviews);
+        // formData.append("isFeatured", isFeatured);
+        // formData.append("image", {
+        //     uri: newImageUri,
+        //     type: mime.getType(newImageUri),
+        //     name: newImageUri.split("/").pop()
+        // });
+
+        // const config = {
+        //     headers: {
+        //         "Content-Type": "multipart/form-data",
+        //         "Authorization": `Bearer ${token}`
+        //     }
+        // }
+        // if (item !== null) {
+        //     console.log(item)
+        //     axios
+        //         .put(`${baseURL}/products/${item.id}`, formData, config)
+        //         .then((res) => {
+        //             if (res.status === 200 || res.status === 201) {
+        //                 Toast.show({
+        //                     topOffset: 60,
+        //                     type: "success",
+        //                     text1: "Product successfuly updated",
+        //                     text2: ""
+        //                 });
+        //                 setTimeout(() => {
+        //                     navigation.navigate("Products");
+        //                 }, 500)
+        //             }
+        //         })
+        //         .catch((error) => {
+        //             Toast.show({
+        //                 topOffset: 60,
+        //                 type: "error",
+        //                 text1: "Something went wrong",
+        //                 text2: "Please try again"
+        //             })
+        //         })
+        // } else {
+        //     axios
+        //         .post(`${baseURL}/products`, formData, config)
+        //         .then((res) => {
+        //             if (res.status === 200 || res.status === 201) {
+        //                 Toast.show({
+        //                     topOffset: 60,
+        //                     type: "success",
+        //                     text1: "New Product added",
+        //                     text2: ""
+        //                 });
+        //                 setTimeout(() => {
+        //                     navigation.navigate("Products");
+        //                 }, 500)
+        //             }
+        //         })
+        //         .catch((error) => {
+        //             console.log(error)
+        //             Toast.show({
+        //                 topOffset: 60,
+        //                 type: "error",
+        //                 text1: "Something went wrong",
+        //                 text2: "Please try again"
+        //             })
+        //         })
+
+        // }
 
     }
     return (
         <FormContainer title="Add Product">
-            <View style={styles.imageContainer}>
-                <Image style={styles.image} source={{ uri: mainImage }} />
-                <TouchableOpacity
-                    onPress={pickImage}
-                    style={styles.imagePicker}>
-                    <Icon style={{ color: "white" }} name="camera" />
-                </TouchableOpacity>
+            <EasyButton
+                medium
+                primary
+                onPress={pickImage}
+                style={{ marginLeft: 10 }}
+            >
+                <Text style={{ color: "white", fontWeight: "bold" }}>Pick Image</Text>
+            </EasyButton>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: 10 }}>
+                {images?.map((image, index) => (
+                    <View key={index} style={{ flexDirection: 'row', margin: 7 }}>
+                        <Image source={{ uri: image }} style={{ width: 100, height: 100, margin: 5 }} />
+                        <TouchableOpacity onPress={() => removeImage(index)}>
+                            <FontAwesome name="remove" size={24} color="red" style={{ marginLeft: 6 }} />
+                        </TouchableOpacity>
+                    </View>
+                ))}
             </View>
             <View style={styles.label}>
                 <Text style={{ textDecorationLine: "underline" }}>Name</Text>

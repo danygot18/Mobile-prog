@@ -21,7 +21,7 @@ import ProductContainer from "../Screens/Product/ProductContainer";
 import Login from "../Screens/User/Login";
 import Main from "./Main";
 // import Cart from "../Screens/Cart/Cart";
-import Products from "../Screens/Admin/Products";
+import Products from "../Screens/Admin/Product/Products";
 import AdminNavigator from "./AdminNavigator";
 import ProductList from "../Screens/Product/ProductList";
 global.__reanimatedWorkletInit = () => { };

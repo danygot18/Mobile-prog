@@ -14,15 +14,16 @@ import Toast from 'react-native-toast-message'
 var { width } = Dimensions.get("window");
 
 const ProductCard = (props) => {
-    const { name, price, image, countInStock } = props;
+    const { name, price, image, images, countInStock } = props;
     const dispatch = useDispatch()
+    console.log(images)
     return (
         <View style={styles.container}>
             <Image 
             style={styles.image}
             resizeMode="contain"
-            source={{uri: image ? 
-                image : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png'}}
+            source={{uri: images[0] ? 
+                images[0] : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png'}}
             />
             <View style={styles.card}/>
             <Text style={styles.title}>

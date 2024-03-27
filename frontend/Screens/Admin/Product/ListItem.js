@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"
 import { useNavigation } from "@react-navigation/native"
-import EasyButton from "../../Shared/StyledComponents/EasyButton";
+import EasyButton from "../../../Shared/StyledComponents/EasyButton";
 
 
 var { width } = Dimensions.get("window");
@@ -90,8 +90,8 @@ const ListItem = ({ item, index, deleteProduct }) => {
             >
                 <Image
                     source={{
-                        uri: item.image
-                            ? item.image
+                        uri: item?.images[0]
+                            ? item?.images[0]
                             : null
                     }}
                     resizeMode="contain"

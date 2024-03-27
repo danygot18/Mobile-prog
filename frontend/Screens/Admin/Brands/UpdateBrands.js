@@ -21,13 +21,13 @@ const { width } = Dimensions.get("window");
 
 const UpdateBrands = ({ route, navigation }) => {
     const { brandId } = route.params;
-    
+
     const [brand, setBrand] = useState({});
     const [brandName, setBrandName] = useState("");
     const [brandLocation, setBrandLocation] = useState("");
     const [token, setToken] = useState("");
     const [images, setImages] = useState([]);
-    
+
     useEffect(() => {
         AsyncStorage.getItem("jwt")
             .then((res) => {
@@ -60,6 +60,7 @@ const UpdateBrands = ({ route, navigation }) => {
         });
 
         if (!result.cancelled) {
+            // Update images state with the file URI
             setImages(prevImages => [...prevImages, result.uri]);
         }
     };
@@ -74,7 +75,7 @@ const UpdateBrands = ({ route, navigation }) => {
             location: brandLocation,
             images: images
         };
-        
+
         updatedBrand.images = await setImageUpload(updatedBrand.images);
         const formData = await setFormData(updatedBrand);
 

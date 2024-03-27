@@ -24,26 +24,27 @@ exports.getBrandId = async (req, res) => {
 //     const images = imageFiles.map(image => {
 //         return `${basePath}${image.filename}`
 //     })
-    
+
 //     return images
 // }
 
 exports.createBrand = async (req, res) => {
 
     try {
+
         const file = req.file;
         const imageFiles = req.files; // Assuming req.files contains an array of additional images
-    
+
         if (!file && !imageFiles.length) return res.status(400).send('No images in the request');
-    
+
         const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
-    
+
         const mainImage = file ? `${basePath}${file.filename}` : null;
-    
+
         const images = imageFiles.map(image => {
             return `${basePath}${image.filename}`;
         });
-    
+
         let brand = new Brand({
             name: req.body.name,
             location: req.body.location,
@@ -52,18 +53,18 @@ exports.createBrand = async (req, res) => {
             // icon: req.body.icon,
             // color: req.body.color
         });
-    
+
         brand = await brand.save();
-    
+
         if (!brand)
             return res.status(400).send('the brand cannot be created!')
-    
+
         res.send(brand);
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
         console.log(error)
     }
-    
+
     // try {
 
     //     req.body.images = await ImageFile.uploadMultiple({
@@ -143,27 +144,22 @@ exports.deleteBrand = async (req, res) => {
 // };
 exports.updateCategory = async (req, res) => {
     try {
-        const brandId = req.params.id; // Assuming brand ID is passed as a parameter
-        
+        const brandId = req.params.id;
+
         // Check if brandId is provided
         if (!brandId) return res.status(400).send('Brand ID is required');
 
         // Find the brand by ID
         let brand = await Brand.findById(brandId);
-        
+
         // If brand doesn't exist, return 404
         if (!brand) return res.status(404).send('Brand not found');
 
         // Update brand properties
         if (req.body.name) brand.name = req.body.name;
         if (req.body.location) brand.location = req.body.location;
-        
-        // Handle image updates
-        if (req.file) {
-            const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
-            brand.image = `${basePath}${req.file.filename}`;
-        }
-        
+
+        // Handle image updates if any images are provided in the request
         if (req.files && req.files.length > 0) {
             const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
             const images = req.files.map(image => `${basePath}${image.filename}`);
@@ -182,4 +178,5 @@ exports.updateCategory = async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
         console.log(error);
     }
+
 };
