@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { View, Text, StyleSheet } from 'react-native';
 
 import ProductContainer from "../Screens/Product/ProductContainer";
+import SingleProduct from '../Screens/Product/SingleProduct';
 const Stack = createStackNavigator();
 
 function MyStack() {
@@ -15,7 +16,13 @@ function MyStack() {
                   headerShown: false,
               }}
           />
-
+          <Stack.Screen 
+                name='Product Detail'
+                component={SingleProduct}
+                // options={{
+                //     headerShown: false,
+                // }}
+          />
       </Stack.Navigator>
   )
 }
