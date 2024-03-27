@@ -55,7 +55,7 @@ const Main = () => {
                 }}
             />
             <Tab.Screen
-                name="User"
+                name="Profile"
                 component={UserNavigator}
                 options={{
                     tabBarIcon: ({color}) => {

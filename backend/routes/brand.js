@@ -7,9 +7,11 @@ const brandController = require('../controllers/BrandController')
 
 
 router.get('/', brandController.getBrand );
+router.get('/:id', brandController.getBrandId );
+
 router.post('/create', upload.array('images'), brandController.createBrand );
 router.delete('/:id', brandController.deleteBrand );
-
+router.put('/:id', upload.array('images'), brandController.updateCategory )
 
 
 module.exports = router;
