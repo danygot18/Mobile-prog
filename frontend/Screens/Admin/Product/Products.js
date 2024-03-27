@@ -35,19 +35,23 @@ const Products = (props) => {
                 elevation={1}
                 style={styles.listHeader}
             >
-                <View style={styles.headerItem}></View>
                 <View style={styles.headerItem}>
-                    <Text style={{ fontWeight: '600' }}>Name</Text>
+                <Text style={{ fontWeight: '600' }}>Images</Text>
+                </View>
+                <View style={styles.headerItem}>
+                <Text style={{ fontWeight: '600' }}>Name</Text>
                 </View>
                 <View style={styles.headerItem}>
                     <Text style={{ fontWeight: '600' }}>Brand</Text>
                 </View>
+  
                 <View style={styles.headerItem}>
                     <Text style={{ fontWeight: '600' }}>Price</Text>
                 </View>
                 <View style={styles.headerItem}>
-                    <Text style={{ fontWeight: '600' }}>Desc.</Text>
+                    <Text style={{ fontWeight: '600' }}>Stock</Text>
                 </View>
+               
             </View>
         )
     }
@@ -129,6 +133,15 @@ const Products = (props) => {
                 <EasyButton
                     secondary
                     medium
+                    onPress={() => navigation.navigate("UserList")}
+                >
+                    <Icon name="shopping-bag" size={18} color="white" />
+                    <Text style={styles.buttonText}>Users</Text>
+                </EasyButton>
+
+                <EasyButton
+                    secondary
+                    medium
                     onPress={() => navigation.navigate("ProductList")}
                 >
                     <Icon name="plus" size={18} color="white" />
@@ -179,6 +192,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 5,
         backgroundColor: 'gainsboro'
+        
     },
     headerItem: {
         margin: 3,
@@ -194,10 +208,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     buttonContainer: {
-        margin: 20,
-        alignSelf: 'center',
-        flexDirection: 'row'
-    },
+        height: height,
+        width: width,
+        flex: 1,
+        alignItems: "center",
+        flexDirection: "row",
+        marginLeft: 30,
+        flexWrap: "wrap",
+        
+      },
     buttonText: {
         marginLeft: 4,
         color: 'white'

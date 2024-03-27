@@ -112,3 +112,12 @@ exports.UpdateProfile = async (req, res, next) => {
         res.status(500).json({ message: 'Failed to update user profile' });
     }
 };
+
+exports.getUser = async (req, res) => {
+    const user = await User.find();
+
+    if (!user) {
+        req.status(500).json({ success: false })
+    }
+    res.status(200).send(user);
+}

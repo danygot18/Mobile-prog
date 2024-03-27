@@ -12,7 +12,6 @@ import EasyButton from "../../../Shared/StyledComponents/EasyButton"
 import baseURL from "../../../assets/common/baseUrl";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Center } from "native-base";
 // import { add } from "react-native-reanimated";
 
 var { width } = Dimensions.get("window")
@@ -22,13 +21,13 @@ const Item = (props) => {
         <View style={styles.item}>
             <View>
                 <Text> Name: {props.item.name}</Text>
-                <Text> Location: {props.item.location}</Text>
+                <Text> Email: {props.item.email}</Text>
             </View>
-            <View style={{ flexDirection: 'row' }}>
+            {/* <View style={{ flexDirection: 'row' }}>
                 <EasyButton
                     primary
                     medium
-                    onPress={() => props.navigation.navigate('UpdateBrands', { brandId: props.item._id })}
+                    onPress={() => props.navigation.navigate('UpdateProductForm', { productId: props.item._id })}
                     style={{ marginRight: 10 }}
                 >
                     <Text style={{ color: "white", fontWeight: "bold" }}>Update</Text>
@@ -40,16 +39,19 @@ const Item = (props) => {
                 >
                     <Text style={{ color: "white", fontWeight: "bold" }}>Delete</Text>
                 </EasyButton>
-            </View>
+            </View> */}
         </View>
     )
 }
 
-const Brands = ({ navigation }) => {
+const UserList = ({ navigation }) => {
 
-    const [brands, setBrands] = useState([]);
-    const [brandName, setBrandName] = useState();
-    const [brandLocation, setBrandLocation] = useState();
+    const [users, setUsers] = useState([]);
+
+
+    // const [products, setProduct] = useState([]);
+    // const [brandName, setBrandName] = useState();
+    // const [brandLocation, setBrandLocation] = useState();
     const [token, setToken] = useState();
 
     useEffect(() => {
@@ -60,12 +62,12 @@ const Brands = ({ navigation }) => {
             .catch((error) => console.log(error));
 
         axios
-            .get(`${baseURL}/brands`)
-            .then((res) => setBrands(res.data))
-            .catch((error) => alert("Error load brands"))
+            .get(`${baseURL}/users`)
+            .then((res) => setUsers(res.data))
+            .catch((error) => alert("Error load users"))
 
         return () => {
-            setBrands();
+            setUsers();
             setToken();
         }
     }, [])
@@ -91,29 +93,29 @@ const Brands = ({ navigation }) => {
     //     setBrandLocation("");
     // }
 
-    const deleteBrand = (id) => {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        };
+    // const deleteUsers= (id) => {
+    //     const config = {
+    //         headers: {
+    //             Authorization: `Bearer ${token}`,
+    //         }
+    //     };
 
-        axios
-            .delete(`${baseURL}/brands/${id}`, config)
-            .then((res) => {
-                const newBrands = brands.filter((item) => item.id !== id);
-                setBrands(newBrands);
-            })
-            .catch((error) => alert("Error delete brands"));
-    }
+    //     axios
+    //         .delete(`${baseURL}/users/${id}`, config)
+    //         .then((res) => {
+    //             const newUsers = users.filter((item) => item.id !== id);
+    //             setUsers(newUsers);
+    //         })
+    //         .catch((error) => alert("Error delete Users"));
+    // }
 
     return (
         <View style={{ position: "relative", height: "100%" }}>
             <View style={{ marginBottom: 60 }}>
                 <FlatList
-                    data={brands}
+                    data={users}
                     renderItem={({ item, index }) => (
-                        <Item item={item} index={index} delete={deleteBrand} navigation={navigation} />
+                        <Item item={item} index={index} navigation={navigation} />
                     )}
                     keyExtractor={(item) => item.id}
                 />
@@ -141,10 +143,7 @@ const Brands = ({ navigation }) => {
                 >
                     <Text style={{ color: "white", fontWeight: "bold" }}>Submit</Text>
                 </EasyButton> */}
-                
-                <Button title="ADD" onPress={() => navigation.navigate('CreateBrand')} />
-              
-                
+                {/* <Button title="ADD" onPress={() => navigation.navigate('ProductForm')} /> */}
             </View>
         </View>
     )
@@ -152,17 +151,16 @@ const Brands = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     bottomBar: {
-        // backgroundColor: "white",
-        width: 2000,
-        height: 120,
+        backgroundColor: "white",
+        width: width,
+        height: 60,
         padding: 2,
-        marginLeft: 15,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
         position: "absolute",
         bottom: 0,
-        left: 150
+        left: 0
     },
     input: {
         height: 40,
@@ -188,4 +186,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Brands;
+export default UserList;

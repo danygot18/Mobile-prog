@@ -140,7 +140,7 @@ const Brands = ({ navigation }) => {
                 >
                     <Text style={{ color: "white", fontWeight: "bold" }}>Submit</Text>
                 </EasyButton> */}
-                {/* <Button title="ADD" onPress={() => navigation.navigate('CreateBrand')} /> */}
+                <Button title="ADD" onPress={() => navigation.navigate('ProductForm')} />
             </View>
         </View>
     )

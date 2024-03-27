@@ -22,7 +22,7 @@ const ListItem = ({ item, index, deleteProduct }) => {
     const navigation = useNavigation()
     return (
         <View>
-            <Modal
+            {/* <Modal
                 animationType="fade"
                 transparent={true}
                 visible={modalVisible}
@@ -47,14 +47,14 @@ const ListItem = ({ item, index, deleteProduct }) => {
                             <Icon name="close" size={20} />
                         </TouchableOpacity>
 
-                        {/* <Button
+                        <Button
                             onPress={() => [navigation.navigate("ProductForm", { item }),
                             setModalVisible(false)
                             ]}
                             title="Edit"
                         >
                             <Text style={styles.textStyle}>Edit</Text>
-                        </Button> */}
+                        </Button>
                         <EasyButton
                             medium
                             secondary
@@ -78,7 +78,7 @@ const ListItem = ({ item, index, deleteProduct }) => {
 
                     </View>
                 </View>
-            </Modal>
+            </Modal> */}
             <TouchableOpacity
                 onPress={() => {
                     navigation.navigate("Product Detail", { item })
@@ -100,7 +100,9 @@ const ListItem = ({ item, index, deleteProduct }) => {
                 <Text style={styles.item} numberOfLines={1} ellipsizeMode="tail">{item.name ? item.name : null}</Text>
                 <Text style={styles.item} numberOfLines={1} ellipsizeMode="tail">{item.brand ? item.brand.name : null}</Text>
                 <Text style={styles.item}>$ {item.price}</Text>
-                <Text style={styles.item} numberOfLines={1} ellipsizeMode="tail">{item.description ? item.description : null}</Text>
+                <Text style={styles.item}>{item.countInStock}</Text>
+                {/* <Text style={styles.item} numberOfLines={1} ellipsizeMode="tail">{item.description ? item.description : null}</Text> */}
+                
             </TouchableOpacity>
         </View>
     )
