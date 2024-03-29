@@ -35,21 +35,15 @@ const UserNavigator = (props) => {
         }}
       />
 
-      <Stack.Screen
-        name="UpdateProfile"
-        component={UpdateProfile}
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <Stack.Screen
+      <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+      <Stack.Screen name="OrderList" component={OrderList} />
+      {/* <Stack.Screen
         name="OrderList"
         component={OrderList}
         options={{
           headerShown: false,
         }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };

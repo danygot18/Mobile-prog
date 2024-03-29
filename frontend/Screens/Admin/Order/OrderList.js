@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import axios from "axios";
-import baseURL from "../../assets/common/baseUrl";
+import baseURL from "../../../assets/common/baseUrl"
 import SyncStorage from "sync-storage";
 import { useNavigation } from "@react-navigation/native";
 
@@ -14,7 +14,7 @@ const Item = ({ item }) => (
             <Text>Price: {orderItem.price}</Text>
             <Text>Quantity: {orderItem.quantity}</Text>
 
-            
+            <Text>Total: {item.totalPrice}</Text>
           </View>
         ))}
 
@@ -25,12 +25,11 @@ const Item = ({ item }) => (
         <Text>Country: {item.shippingInfo.country}</Text>
         <Text>Phone Number: {item.shippingInfo.phoneNo}</Text>
         <Text>Postal Code: {item.shippingInfo.postalCode}</Text>
-        <Text>Total: {item.totalPrice}</Text>
       </View>
     </View>
   );
   
-const OrderList = () => {
+const adminOrderList = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
@@ -49,7 +48,7 @@ const OrderList = () => {
             Authorization: `${token}`,
           },
         };
-        const { data }= await axios.get(`${baseURL}/orders`, config);
+        const { data }= await axios.get(`${baseURL}/orders/admin`, config);
         console.log(data)
         setOrders(data.orders);
       } catch (error) {
@@ -89,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderList;
+export default adminOrderList;

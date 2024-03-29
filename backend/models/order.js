@@ -121,7 +121,7 @@ const orderSchema = new mongoose.Schema({
     orderStatus: {
         type: String,
         required: true,
-        default: 'Processing' // Processing, Confirmed, Shipped, Delivered
+        default: 'Processing, Confirmed, Shipped, Delivered' // Processing, Confirmed, Shipped, Delivered
     },
     deliveredAt: {
         type: Date

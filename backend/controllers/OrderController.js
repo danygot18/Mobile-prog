@@ -82,46 +82,95 @@ const Product  = require('../models/product');
 //     // Add other controller functions here...
 // };
 
-exports.newOrder = async (req, res, next) => {
-    try {
-      // Extract shipping information from the request body
-      const shippingInfo = {
-        address: req.body.address,
-        city: req.body.city,
-        phoneNo: req.body.phoneNo,
-        postalCode: req.body.postalCode,
-        country: req.body.country
+// exports.newOrder = async (req, res, next) => {
+//     try {
+//       // Extract shipping information from the request body
+//       const shippingInfo = {
+//         address: req.body.address,
+//         city: req.body.city,
+//         phoneNo: req.body.phoneNo,
+//         postalCode: req.body.postalCode,
+//         country: req.body.country
         
-      };
+//       };
       
-      // Extract other necessary information from the request body
-      const { orderItems } = req.body;
+//       // Extract other necessary information from the request body
+//       const { orderItems } = req.body;
 
-    //   req.body.orderItems.product = req.body.orderItems.id
-      console.log(req.body)
-      // Create a new order in the database
-      const order = await Order.create({
-        orderItems,
-        shippingInfo,
-        paidAt: Date.now(),
-        user: req.user._id // Assuming req.user contains user information
-        // You can include itemsPrice, totalPrice, and paymentInfo here if needed
-      });
+//     //   req.body.orderItems.product = req.body.orderItems.id
+//       console.log(req.body)
+//       // Create a new order in the database
+//       const order = await Order.create({
+//         orderItems,
+//         shippingInfo,
+//         paidAt: Date.now(),
+//         user: req.user._id // Assuming req.user contains user information
+//         // You can include itemsPrice, totalPrice, and paymentInfo here if needed
+//       });
   
-      // Send a success response with the newly created order
-      res.status(200).json({
-        success: true,
-        order
-      });
-    } catch (error) {
-      // Handle errors
-      console.error("Error creating order:", error);
-      res.status(500).json({
-        success: false,
-        error: "Failed to create order"
-      });
-    }
-  };
+//       // Send a success response with the newly created order
+//       res.status(200).json({
+//         success: true,
+//         order
+//       });
+//     } catch (error) {
+//       // Handle errors
+//       console.error("Error creating order:", error);
+//       res.status(500).json({
+//         success: false,
+//         error: "Failed to create order"
+//       });
+//     }
+//   };
+
+
+exports.newOrder = async (req, res, next) => {
+  try {
+    // Extract shipping information from the request body
+    const shippingInfo = {
+      address: req.body.address,
+      city: req.body.city,
+      phoneNo: req.body.phoneNo,
+      postalCode: req.body.postalCode,
+      country: req.body.country
+    };
+
+    // Extract other necessary information from the request body
+    const { orderItems } = req.body;
+
+    // Calculate total price for each order item
+    let totalPrice = 0;
+    const calculatedOrderItems = orderItems.map(item => {
+      const totalItemPrice = item.quantity * item.price;
+      totalPrice += totalItemPrice;
+      return { ...item, totalPrice: totalItemPrice };
+    });
+
+    // Create a new order in the database
+    const order = await Order.create({
+      orderItems: calculatedOrderItems,
+      shippingInfo,
+      totalPrice, // Include the total price for the entire order
+      orderStatus: 'Processing', // Assuming this is the default status
+      user: req.user._id // Assuming req.user contains user information
+      // You can include itemsPrice, totalPrice, and paymentInfo here if needed
+    });
+
+    // Send a success response with the newly created order
+    res.status(200).json({
+      success: true,
+      order
+    });
+  } catch (error) {
+    // Handle errors
+    console.error("Error creating order:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to create order"
+    });
+  }
+};
+
 
 exports.myOrders = async (req, res, next) => {
     const orders = await Order.find({ user: req.user.id })

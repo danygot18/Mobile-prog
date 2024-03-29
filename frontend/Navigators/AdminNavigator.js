@@ -13,6 +13,7 @@ import ProductList from "../Screens/Admin/Product/ProductList"
 
 import UserList from "../Screens/Admin/User/UserList"
 
+import adminOrderList from "../Screens/Admin/Order/OrderList"
 const Stack = createStackNavigator();
 
 const AdminNavigator= () => {
@@ -35,6 +36,10 @@ const AdminNavigator= () => {
             <Stack.Screen name="ProductList" component={ProductList} />
 
             <Stack.Screen name="UserList" component={UserList} />
+
+            <Stack.Screen name="adminOrderList" component={adminOrderList} />
+
+
 
 
         </Stack.Navigator>
