@@ -5,14 +5,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from "axios"
 import baseURL from "../../assets/common/baseUrl"
 import { useFocusEffect } from '@react-navigation/native';
+import { getUser } from '../../utils/user';
+import SyncStorage from "sync-storage";
 
 const UserProfile = ({ navigation }) => {
     const [userProfile, setUserProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+    console.log(SyncStorage.get('jwt'))
     const getProfile = async () => {
-        const token = await AsyncStorage.getItem('jwt');
+        
+        const token = await SyncStorage.get('jwt');
         if (!token) {
             setIsAuthenticated(false);
             navigation.navigate('Login');
@@ -71,6 +74,8 @@ const UserProfile = ({ navigation }) => {
                     </View>
                     <Button title="Logout" onPress={handleLogout} />
                     <Button title= "Update" onPress= {() => navigation.navigate('UpdateProfile')} />
+                    
+                    <Button title= "Order" onPress= {() => navigation.navigate('OrderList')} />
                     
                 </>
             </ScrollView>

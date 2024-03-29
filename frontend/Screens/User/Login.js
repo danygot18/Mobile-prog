@@ -10,6 +10,7 @@ import axios from 'axios';
 import baseURL from "../../assets/common/baseUrl";
 import Toast from 'react-native-toast-message';
 import { authenticate, getToken, getUser } from '../../utils/user';
+import SyncStorage from "sync-storage";
 
 const Login = ({ navigation }) => {
 //   const navigation = useNavigation();
@@ -20,19 +21,21 @@ const Login = ({ navigation }) => {
 
   const login = async (values) => {
     try {
-
         const { data } = await axios.post(`${baseURL}/users/login`, values);
-
         Toast.show({
             topOffset: 60,
             type: "success",
             text1: data.message,
         });
-
-        authenticate(data)
+        // authenticate(data)
+        console.log(data)
         // setLoader(false)
+        SyncStorage.set("jwt", data.token);
+        SyncStorage.set("user", JSON.stringify(data.user))
 
         navigation.navigate('UserProfile');
+
+        
 
     } catch (err) {
         console.log(err)

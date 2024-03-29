@@ -1,14 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Text, View, TouchableHighlight, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
-import { Box, VStack, HStack, Button, Avatar,  Spacer, } from 'native-base';
+import { Box, VStack, HStack, Button, Avatar,  Spacer, Toast, } from 'native-base';
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { removeFromCart, clearCart } from '../../Redux/Actions/cartActions'
-var { height, width } = Dimensions.get("window");
+
 import EasyButton from "../../Shared/StyledComponents/EasyButton"
+import AuthGlobal from "../../Context/Store/AuthGlobal"
+import { getUser } from '../../utils/user';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import SyncStorage from "sync-storage";
+
+var { height, width } = Dimensions.get("window");
+
+
+
 const Cart = () => {
+    const context = useContext(AuthGlobal);
+    
     const navigation = useNavigation()
     dispatch = useDispatch()
     const cartItems = useSelector(state => state.cartItems)
@@ -16,6 +27,28 @@ const Cart = () => {
     cartItems.forEach(cart => {
         return (total += cart.price)
     });
+
+    const goCheckout  = () => {
+        const token = SyncStorage.get('jwt');
+        console.log(token)
+        if(token) {
+            // setUser(context.stateUser.user.userId)
+            console.log("dumaan")
+            navigation.navigate("Checkout");
+        } else {
+            console.log("taena")
+            navigation.navigate("Login");
+            Toast.show({
+                topOffset: 60,
+                type: "error",
+                text1: "Please Login to Checkout",
+                text2: ""
+            });
+        }
+        
+    }
+
+
     const renderItem = ({ item, index }) =>
         <TouchableHighlight
             _dark={{
@@ -29,8 +62,8 @@ const Cart = () => {
             <Box pl="4" pr="5" py="2" bg="white" keyExtractor={item => item.id}>
                 <HStack alignItems="center" space={3}>
                     <Avatar size="48px" source={{
-                        uri: item.image ?
-                            item.image : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png'
+                        uri: item.images[0] ?
+                            item.images[0] : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png'
                     }} />
                     <VStack>
                         <Text color="coolGray.800" _dark={{
@@ -48,6 +81,8 @@ const Cart = () => {
                 </HStack>
             </Box>
         </TouchableHighlight>;
+
+  
 
     const renderHiddenItem = (cartItems) =>
         <TouchableOpacity
@@ -108,7 +143,7 @@ const Cart = () => {
                     <EasyButton
                         secondary
                         medium
-                        onPress={() => navigation.navigate('Checkout')}
+                        onPress={goCheckout}
                     >
                         <Text style={{ color: 'white' }}>Checkout</Text>
                     </EasyButton>

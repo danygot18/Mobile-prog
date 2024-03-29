@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Toast from "react-native-toast-message"
 import baseURL from "../../assets/common/baseUrl"
-
+import SyncStorage from "sync-storage";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 
 export const loginUser = (user, dispatch) => {
@@ -21,7 +21,7 @@ export const loginUser = (user, dispatch) => {
         if (data) {
             // console.log(data)
             const token = data.token;
-            AsyncStorage.setItem("jwt", token)
+            SyncStorage.set("jwt", token)
             const decoded = jwtDecode(token)
             console.log("token",token)
             dispatch(setCurrentUser(decoded, user))
@@ -55,7 +55,7 @@ export const getUserProfile = (id) => {
 }
 
 export const logoutUser = (dispatch) => {
-    AsyncStorage.removeItem("jwt");
+    SyncStorage.removeItem("jwt");
     dispatch(setCurrentUser({}))
 }
 
