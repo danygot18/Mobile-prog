@@ -8,22 +8,20 @@ const Stack = createStackNavigator();
 
 function MyStack() {
   return (
-      <Stack.Navigator>
-          <Stack.Screen
-              name='Home'
-              component={ProductContainer}
-              options={{
-                  headerShown: false,
-              }}
-          />
-          <Stack.Screen 
-                name='Product Detail'
-                component={SingleProduct}
-                // options={{
-                //     headerShown: false,
-                // }}
-          />
-      </Stack.Navigator>
+    <Stack.Navigator>
+      <Stack.Screen
+        name='Home'
+        component={ProductContainer}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name='Product Detail'
+        component={SingleProduct}
+        options={({ route }) => ({ headerShown: route.params && route.params.showHeader ? route.params.showHeader : false })}
+      />
+    </Stack.Navigator>
   )
 }
 

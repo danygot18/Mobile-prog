@@ -3,16 +3,28 @@ import { Image, View, StyleSheet, Text, ScrollView, Button } from "react-native"
 import { Left, Right, Container, H1, Center, Heading } from 'native-base'
 import EasyButton from "../../Shared/StyledComponents/EasyButton"
 import TrafficLight from '../../Shared/StyledComponents/TrafficLight'
-const SingleProduct = ({ route }) => {
-    const [item, setItem] = useState(route.params.item);
+import { addToCart } from "../../Redux/Actions/cartActions";
+import { useDispatch } from 'react-redux';
+
+const SingleProduct = ({ route,navigation }) => {
+    console.log(route.params.brand)
+    
+    const [name, setName] = useState(route.params.name);
+    const [images, setImages] = useState(route.params.images[0]);
+    const [brand, setBrands] = useState(route.params.brand.name);
+    const [description, setDescription] = useState(route.params.description);
+    const [countInStock, setCountInStock] = useState(route.params.countInStock);
+    const dispatch = useDispatch();
+
     // console.log(item)
     const [availability, setAvailability] = useState('')
     const [availabilityText, setAvailabilityText] = useState("")
+
     useEffect(() => {
-        if (item.countInStock == 0) {
+        if (countInStock == 0) {
             setAvailability(<TrafficLight unavailable></TrafficLight>);
             setAvailabilityText("Unvailable")
-        } else if (item.countInStock <= 5) {
+        } else if (countInStock <= 5) {
             setAvailability(<TrafficLight limited></TrafficLight>);
             setAvailabilityText("Limited Stock")
         } else {
@@ -25,6 +37,12 @@ const SingleProduct = ({ route }) => {
             setAvailabilityText("");
         }
     }, [])
+
+    const handleAddToCart = () => {
+        dispatch(addToCart({ ...route.params, quantity: 1 }));
+        navigation.navigate('Home');
+    };
+
     return (
         <Center flexGrow={1}>
             <ScrollView style={{ marginBottom: 80, padding: 5 }}>
@@ -32,7 +50,7 @@ const SingleProduct = ({ route }) => {
                     
                     <Image
                         source={{
-                            uri: item.image ? item.image : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png'
+                            uri: images ? images : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png'
                         }}
                         resizeMode="contain"
                         style={styles.image}
@@ -40,8 +58,8 @@ const SingleProduct = ({ route }) => {
 
                 </View> 
                 <View style={styles.contentContainer}>
-                    <Heading style={styles.contentHeader} size='xl'>{item.name}</Heading>
-                    <Text style={styles.contentText}>{item.brand}</Text>
+                    <Heading style={styles.contentHeader} size='xl'>{name}</Heading>
+                    <Text style={styles.contentText}>{brand}</Text>
                 </View>
                 <View style={styles.availabilityContainer}>
                     <View style={styles.availability}>
@@ -50,11 +68,12 @@ const SingleProduct = ({ route }) => {
                         </Text>
                         {availability}
                     </View>
-                    <Text>{item.description}</Text>
+                    <Text>{description}</Text>
                 </View>
                 <EasyButton
                     primary
                     medium
+                    onPress={handleAddToCart}
                 >
 
                     <Text style={{ color: "white" }}> Add</Text>
