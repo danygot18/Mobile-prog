@@ -10,7 +10,10 @@ import Brands from "../Screens/Admin/Brands/Brands"
 import CreateBrand from "../Screens/Admin/Brands/CreateBrands"
 import UpdateBrands from "../Screens/Admin/Brands/UpdateBrands"
 import ProductList from "../Screens/Admin/Product/ProductList"
-
+import AdminCharts from "../Screens/Admin/Charts/AdminCharts"
+import BarGraph from "../Screens/Admin/Charts/BarChart";
+import PieGraph from "../Screens/Admin/Charts/PieChart";
+import LineGraph from "../Screens/Admin/Charts/LineGraph";
 import UserList from "../Screens/Admin/User/UserList"
 
 import adminOrderList from "../Screens/Admin/Order/OrderList"
@@ -38,9 +41,10 @@ const AdminNavigator= () => {
             <Stack.Screen name="UserList" component={UserList} />
 
             <Stack.Screen name="adminOrderList" component={adminOrderList} />
-
-
-
+            <Stack.Screen name="AdminCharts" component={AdminCharts}/>
+            <Stack.Screen name="BarCharts" component={BarGraph} options={{ title: "Sales Per User" }}/>
+            <Stack.Screen name="PieCharts" component={PieGraph} options={{ title: "Most Ordered Product" }}/>
+            <Stack.Screen name="LineGraph" component={LineGraph} options={{ title: "Sales Per Month" }}/>
 
         </Stack.Navigator>
     )

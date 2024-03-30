@@ -196,7 +196,7 @@ exports.getSingleOrder = async (req, res, next) => {
 }
 
 exports.adminOrders = async (req, res, next) => {
-    const orders = await Order.find()
+    const orders = await Order.find().populate('user', 'name')
 
     let totalAmount = 0;
 

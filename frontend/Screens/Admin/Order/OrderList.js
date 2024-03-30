@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 const Item = ({ item }) => (
     <View style={styles.item}>
       <View>
+        <Text>Name: {item.user.name}</Text>
         {item.orderItems.map((orderItem) => (
           <View key={orderItem._id}>
             <Text>Product: {orderItem.name}</Text>
