@@ -21,11 +21,14 @@ const usersRoutes = require("./routes/user");
 const brandsRoutes = require("./routes/brand");
 const productsRoutes = require("./routes/product");
 const orderRoutes = require("./routes/order");
+const reviewRoutes = require("./routes/review");
 
 app.use(`/api/v1/users`, usersRoutes);
 app.use(`/api/v1/brands`, brandsRoutes);
 app.use(`/api/v1/products`, productsRoutes);
 app.use(`/api/v1/orders`, orderRoutes);
+app.use(`/api/v1/reviews`, reviewRoutes);
+
 
 module.exports = app;
 
