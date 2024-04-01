@@ -1,18 +1,30 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, Image, ScrollView } from 'react-native';
-import axios from 'axios';
+import React, { useState, useEffect, useReducer } from "react";
+import {
+  View,
+  Text,
+  Button,
+  TextInput,
+  StyleSheet,
+  Image,
+  ScrollView,
+} from "react-native";
+import axios from "axios";
 import baseURL from "../../assets/common/baseUrl";
+import SyncStorage from "sync-storage";
 
-const ReviewSection = ({ product, token, user }) => {
-  console.log(product + " 8")
+const ReviewSection = ({ product, token }) => {
+  console.log(product + " 8");
   const [rating, setRating] = useState(5); // Initial rating value
-  const [comments, setComments] = useState('');
+  const [comments, setComments] = useState("");
   const [hasReviewed, setHasReviewed] = useState(false);
   const [reviews, setReviews] = useState([]);
 
+  const user = JSON.parse(SyncStorage.get("user"));
+  
+
   const fetchReviews = async () => {
     try {
-      const response = await axios.get(`${baseURL}/reviews`);
+      const response = await axios.get(`${baseURL}/reviews?id=${product._id}`);
       setReviews(response.data);
     } catch (error) {
       console.error("Error fetching reviews:", error);
@@ -38,28 +50,28 @@ const ReviewSection = ({ product, token, user }) => {
 
   const handleReviewSubmit = async () => {
     try {
+      console.log(user["_id"]);
       const reviewData = {
         product: product._id,
         user: user._id, // Include the user ID in the review data
         rating,
-        comments
+        comments,
       };
 
       // Make the review submission request with the user's token
       const response = await axios.post(`${baseURL}/reviews`, reviewData, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       console.log("Review submitted successfully:", response.data);
       setRating(1); // Reset rating to 1 after submission
-      setComments(''); // Clear comments after submission
+      setComments(""); // Clear comments after submission
     } catch (error) {
       console.error("Error submitting review:", error);
     }
   };
-
 
   return (
     <ScrollView>
@@ -80,7 +92,6 @@ const ReviewSection = ({ product, token, user }) => {
           </View>
         ))}
 
-        
         <>
           <Text style={styles.title}>Leave a Review:</Text>
           <View style={styles.ratingContainer}>
@@ -92,7 +103,7 @@ const ReviewSection = ({ product, token, user }) => {
             style={styles.input}
             placeholder="Comments"
             value={comments}
-            onChangeText={text => setComments(text)}
+            onChangeText={(text) => setComments(text)}
             multiline={true}
             numberOfLines={4}
           />
@@ -102,28 +113,26 @@ const ReviewSection = ({ product, token, user }) => {
             disabled={hasReviewed} // Disable the button if the user has already reviewed
           />
         </>
-       
       </View>
     </ScrollView>
   );
-
 };
 
 const styles = StyleSheet.create({
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   reviewContainer: {
-    flexDirection: 'row', // Align avatar and comment side by side
-    alignItems: 'center', // Center items vertically
-    backgroundColor: 'white',
+    flexDirection: "row", // Align avatar and comment side by side
+    alignItems: "center", // Center items vertically
+    backgroundColor: "white",
     borderRadius: 10,
     padding: 10,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
   },
   avatarContainer: {
     marginRight: 10,
@@ -137,17 +146,17 @@ const styles = StyleSheet.create({
     flex: 1, // Take up remaining space in the row
   },
   userName: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
   },
   ratingContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
     padding: 10,
     marginBottom: 20,

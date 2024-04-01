@@ -1,17 +1,17 @@
+// Import necessary modules
 import React, { useState, useEffect, useCallback } from "react";
-import { Image, View, StyleSheet, Text, ScrollView, Button } from "react-native";
-import { Left, Right, Container, H1, Center, Heading } from 'native-base'
-import EasyButton from "../../Shared/StyledComponents/EasyButton"
-import TrafficLight from '../../Shared/StyledComponents/TrafficLight'
+import { Image, View, StyleSheet, Text, ScrollView, Dimensions, ImageBackground } from "react-native";
+import EasyButton from "../../Shared/StyledComponents/EasyButton";
+import TrafficLight from '../../Shared/StyledComponents/TrafficLight';
 import { addToCart } from "../../Redux/Actions/cartActions";
 import { useDispatch } from 'react-redux';
 import ReviewSection from './ReviewSection';
-import SyncStorage from 'sync-storage';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import Swiper from "react-native-swiper";
 
 const SingleProduct = ({ route }) => {
+    const { width } = Dimensions.get("window");
+    const height = (width * 100) / 100;
 
     const [product, setProduct] = useState(route.params);
     const [name, setName] = useState(route.params.name);
@@ -23,49 +23,26 @@ const SingleProduct = ({ route }) => {
     const navigation = useNavigation();
     const [user, setUser] = useState(null);
     const [token, setToken] = useState("");
-
-    const [availability, setAvailability] = useState('')
-    const [availabilityText, setAvailabilityText] = useState("")
+    const [availability, setAvailability] = useState('');
+    const [availabilityText, setAvailabilityText] = useState("");
 
     useEffect(() => {
-        if (countInStock == 0) {
-            setAvailability(<TrafficLight unavailable></TrafficLight>);
-            setAvailabilityText("Unvailable")
+        if (countInStock === 0) {
+            setAvailability(<TrafficLight unavailable />);
+            setAvailabilityText("Unavailable");
         } else if (countInStock <= 5) {
-            setAvailability(<TrafficLight limited></TrafficLight>);
-            setAvailabilityText("Limited Stock")
+            setAvailability(<TrafficLight limited />);
+            setAvailabilityText("Limited Stock");
         } else {
-            setAvailability(<TrafficLight available></TrafficLight>);
-            setAvailabilityText("Available")
+            setAvailability(<TrafficLight available />);
+            setAvailabilityText("Available");
         }
 
         return () => {
             setAvailability(null);
             setAvailabilityText("");
-        }
-    }, [])
-
-    const fetchUserAndToken = async() => {
-        try {
-          const userData = await SyncStorage.get("user");
-          const jwtToken = await SyncStorage.get("jwt");
-          console.log(jwtToken + "52");
-          if (userData && jwtToken) {
-            setUser(JSON.parse(userData));
-            setToken(jwtToken);
-          } else {
-            console.error("User data or token not found.");
-          }
-        } catch (error) {
-          console.error("Error fetching user data or token:", error);
-        }
-      };
-    
-      useFocusEffect(
-        useCallback(() => {
-          fetchUserAndToken();
-        }, [])
-    );
+        };
+    }, []);
 
     const handleAddToCart = () => {
         dispatch(addToCart({ ...route.params, quantity: 1 }));
@@ -74,33 +51,41 @@ const SingleProduct = ({ route }) => {
 
     return (
         <ScrollView>
-        <View style={styles.container}>
-            <Swiper style={styles.wrapper} showsButtons={true}>
-                {images.map((image, index) => (
-                    <View key={index}>
-                        <Image
+            <View style={styles.container}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {/* <Swiper style={styles.wrapper} showsButtons={true}> */}
+                    {images.map((image, index) => (
+                        // <View key={index} style={styles.imageContainer}>
+                        //     <Image
+                        //         source={{ uri: image }}
+                        //         style={styles.image}
+                        //         resizeMode="cover"
+                        //     />
+                        // </View>
+                        <ImageBackground
+                            style={{ width, height, marginTop: 25, resizeMode: "contain" }}
                             source={{ uri: image }}
-                            style={styles.image}
-                        />
-                    </View>
-                ))}
-            </Swiper>
-            <View style={styles.contentContainer}>
-                <Text style={styles.name}>Product name: {name}</Text>
-                <Text style={styles.brand}>Brand: {brand}</Text>
-                <Text style={styles.description}>Description: {description}</Text>
-                <Text style={styles.availability}>Availability: {availabilityText}</Text>
-                <Text style={styles.countInStock}>Count in Stock: {countInStock}</Text>
-                <EasyButton
-                    primary
-                    medium
-                    onPress={handleAddToCart}
-                >
-                    <Text style={styles.buttonText}>Add to Cart</Text>
-                </EasyButton>
-                <ReviewSection product={product} token={token} user={user}/>
+                            key={index}
+                        ></ImageBackground>
+                    ))}
+                {/* </Swiper> */}
+                </ScrollView >
+                <View style={styles.contentContainer}>
+                    <Text style={styles.name}>Product name: {name}</Text>
+                    <Text style={styles.brand}>Brand: {brand}</Text>
+                    <Text style={styles.description}>Description: {description}</Text>
+                    <Text style={styles.availability}>Availability: {availabilityText}</Text>
+                    <Text style={styles.countInStock}>Count in Stock: {countInStock}</Text>
+                    <EasyButton
+                        primary
+                        medium
+                        onPress={handleAddToCart}
+                    >
+                        <Text style={styles.buttonText}>Add to Cart</Text>
+                    </EasyButton>
+                    <ReviewSection product={product} token={token} user={user} />
+                </View>
             </View>
-        </View>
         </ScrollView>
     );
 };
@@ -110,9 +95,17 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     wrapper: {},
+    imageContainer: {
+        marginTop: 100,
+        alignItems: "center",
+        height: 200,
+        marginBottom: 20
+    },
     image: {
-        width: '100%',
-        height: 300,
+        flex: 1,
+        width: 400,
+        height: 400,
+        alignItems: "center",
     },
     contentContainer: {
         padding: 20,

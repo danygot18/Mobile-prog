@@ -5,6 +5,7 @@ const {Product} = require('../models/product');
 
 exports.createReview = async (req, res) => {
     try {
+      console.log(req.body)
         const { user, product, rating, comments } = req.body;
 
         // Check if the user has already submitted a review for this product
@@ -16,11 +17,12 @@ exports.createReview = async (req, res) => {
         }
 
         // Create a new review instance
-        const newReview = new Review({ user, product, rating, comments });
+        // const newReview = new Review({ user, product, rating, comments });
 
         // Save the review to the database
-        const savedReview = await newReview.save();
-
+        // const savedReview = await newReview.save();
+        
+        const savedReview = await Review.create(req.body)
         // Respond with the saved review
         res.status(201).json(savedReview);
     } catch (error) {
@@ -30,14 +32,19 @@ exports.createReview = async (req, res) => {
 };
 
 exports.getReviews = async (req, res) => {
+
     try {
+      const filterOption = {}
+      if (req.query.id){
+        filterOption.product = req.query.id
+      }
       // Retrieve all reviews from the database, populating user and product fields
-      const reviews = await Review.find().populate('user').populate('product');
+      const reviews = await Review.find(filterOption).populate('user').populate('product');
   
       // If there are no reviews, respond with a message
-      if (!reviews || reviews.length === 0) {
-        return res.status(404).json({ message: "No reviews found" });
-      }
+      // if (!reviews || reviews.length === 0) {
+      //   return res.status(404).json({ message: "No reviews found" });
+      // }
   
       // Respond with the populated reviews
       res.status(200).json(reviews);
@@ -47,5 +54,6 @@ exports.getReviews = async (req, res) => {
       res.status(500).json({ message: "Internal server error" });
     }
   };
+
 
 

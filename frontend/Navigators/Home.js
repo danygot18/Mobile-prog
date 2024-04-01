@@ -17,7 +17,7 @@ function MyStack() {
         }}
       />
       <Stack.Screen
-        name='Product Detail'
+        name='SingleProduct'
         component={SingleProduct}
         options={({ route }) => ({ headerShown: route.params && route.params.showHeader ? route.params.showHeader : false })}
       />
