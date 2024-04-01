@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { Image, View, StyleSheet, Text, ScrollView } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { Image, View, StyleSheet, Text, ScrollView, Button } from "react-native";
+import { Left, Right, Container, H1, Center, Heading } from 'native-base'
 import EasyButton from "../../Shared/StyledComponents/EasyButton"
 import TrafficLight from '../../Shared/StyledComponents/TrafficLight'
 import { addToCart } from "../../Redux/Actions/cartActions";
 import { useDispatch } from 'react-redux';
-import { useNavigation } from "@react-navigation/native";
+import ReviewSection from './ReviewSection';
+import SyncStorage from 'sync-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import Swiper from "react-native-swiper";
 
 const SingleProduct = ({ route }) => {
+
+    const [product, setProduct] = useState(route.params);
     const [name, setName] = useState(route.params.name);
     const [images, setImages] = useState(route.params.images);
     const [brand, setBrands] = useState(route.params.brand.name);
@@ -15,6 +21,8 @@ const SingleProduct = ({ route }) => {
     const [countInStock, setCountInStock] = useState(route.params.countInStock);
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const [user, setUser] = useState(null);
+    const [token, setToken] = useState("");
 
     const [availability, setAvailability] = useState('')
     const [availabilityText, setAvailabilityText] = useState("")
@@ -37,7 +45,27 @@ const SingleProduct = ({ route }) => {
         }
     }, [])
 
-
+    const fetchUserAndToken = async() => {
+        try {
+          const userData = await SyncStorage.get("user");
+          const jwtToken = await SyncStorage.get("jwt");
+          console.log(jwtToken + "52");
+          if (userData && jwtToken) {
+            setUser(JSON.parse(userData));
+            setToken(jwtToken);
+          } else {
+            console.error("User data or token not found.");
+          }
+        } catch (error) {
+          console.error("Error fetching user data or token:", error);
+        }
+      };
+    
+      useFocusEffect(
+        useCallback(() => {
+          fetchUserAndToken();
+        }, [])
+    );
 
     const handleAddToCart = () => {
         dispatch(addToCart({ ...route.params, quantity: 1 }));
@@ -45,6 +73,7 @@ const SingleProduct = ({ route }) => {
     };
 
     return (
+        <ScrollView>
         <View style={styles.container}>
             <Swiper style={styles.wrapper} showsButtons={true}>
                 {images.map((image, index) => (
@@ -69,8 +98,10 @@ const SingleProduct = ({ route }) => {
                 >
                     <Text style={styles.buttonText}>Add to Cart</Text>
                 </EasyButton>
+                <ReviewSection product={product} token={token} user={user}/>
             </View>
         </View>
+        </ScrollView>
     );
 };
 

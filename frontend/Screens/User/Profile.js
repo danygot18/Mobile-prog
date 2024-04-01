@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, ScrollView, Button, Image, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, Button, Image, StyleSheet,Alert } from 'react-native';
 import { Container } from "native-base"
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from "axios"
@@ -9,6 +9,7 @@ import { getUser } from '../../utils/user';
 import SyncStorage from "sync-storage";
 import { useDispatch, useSelector } from 'react-redux'
 import { logoutAction } from '../../Redux/Actions/userActions'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const UserProfile = ({ navigation }) => {
     const [userProfile, setUserProfile] = useState(null);
@@ -65,10 +66,37 @@ const UserProfile = ({ navigation }) => {
         }
     };
 
+    const notifyOrderStatus = async () => {
+        try {
+            const token = await SyncStorage.get('jwt');
+            const config = {
+                headers: {
+                    Authorization: `${token}`,
+                },
+            };
+            const response = await axios.get(`${baseURL}/orders`, config);
+            const orders = response.data.orders;
+            const deliveredOrders = orders.filter(order => order.orderStatus === "Delivered");
+            if (deliveredOrders.length > 0) {
+                let message = "Delivered Orders:\n";
+                deliveredOrders.forEach(order => {
+                    message += `Order ID: ${order._id}, \nStatus: ${order.orderStatus}\n`;
+                });
+                Alert.alert('Delivered Orders', message);
+            } else {
+                Alert.alert('No Delivered Orders', 'You have no orders with status "Delivered".');
+            }
+        } catch (error) {
+            console.error('Error notifying order status:', error);
+            Alert.alert('Notification Error', 'Failed to notify order status.');
+        }
+    };
+
     return (
         <Container style={styles.container}>
             <ScrollView contentContainerStyle={styles.subContainer}>
                 <>
+                <MaterialIcons name="notifications" size={30} color="black" onPress={notifyOrderStatus} />
                     <Text style={{ fontSize: 30 }}>{userProfile?.name}</Text>
                     {userProfile && userProfile?.image && (
                         <Image source={{ uri: userProfile.image }} style={styles.image} />
