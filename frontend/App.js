@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import Main from './Navigators/Main';
+
 // import Home from './Navigators/Home';
 import Header from './Shared/Header';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,6 +12,8 @@ import DrawerNavigator from './Navigators/DrawerNavigator';
 
 import { Provider } from "react-redux";
 import store from "./Redux/store";
+import SyncStorage from 'sync-storage'
+import Main from './Main';
 
 
 const theme = extendTheme({ colors: newColorTheme });
@@ -23,6 +25,8 @@ const newColorTheme = {
   },
 };
 
+
+
 export default function App() {
   return (
     <Auth>
@@ -30,7 +34,8 @@ export default function App() {
         <NativeBaseProvider theme={theme}>
           <NavigationContainer>
             {/* <Header /> */}
-            <DrawerNavigator />
+            {/* <DrawerNavigator /> */}
+            <Main />
             {/* <Main /> */}
             {/* <Toast /> */}
 

@@ -11,6 +11,8 @@ import baseURL from "../../assets/common/baseUrl";
 import Toast from 'react-native-toast-message';
 import { authenticate, getToken, getUser } from '../../utils/user';
 import SyncStorage from "sync-storage";
+import { useDispatch, useSelector } from 'react-redux'
+import { clearErrors, loginAction } from '../../Redux/Actions/userActions';
 
 const Login = ({ navigation }) => {
 //   const navigation = useNavigation();
@@ -18,6 +20,8 @@ const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const dispatch = useDispatch();
 
   const login = async (values) => {
     try {
@@ -54,6 +58,7 @@ const Login = ({ navigation }) => {
 const handleSubmit = () => {
     const values = {email:email,password:password}; 
     login(values);
+    dispatch(loginAction(values))
 }
 
   return (

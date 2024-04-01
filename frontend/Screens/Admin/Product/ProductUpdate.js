@@ -21,6 +21,7 @@ import { Item, Picker, Select, Box } from "native-base";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons';
+import SyncStorage from "sync-storage";
 
 const UpdateProductForm = ({ route }) => {
 

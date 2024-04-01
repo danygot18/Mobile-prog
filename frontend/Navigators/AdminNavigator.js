@@ -16,7 +16,8 @@ import PieGraph from "../Screens/Admin/Charts/PieChart";
 import LineGraph from "../Screens/Admin/Charts/LineGraph";
 import UserList from "../Screens/Admin/User/UserList"
 
-import adminOrderList from "../Screens/Admin/Order/OrderList"
+import AdminOrderList from "../Screens/Admin/Order/OrderList"
+import HandleUpdateStatus from "../Screens/Admin/Order/UpdateOrder"
 const Stack = createStackNavigator();
 
 const AdminNavigator= () => {
@@ -40,7 +41,10 @@ const AdminNavigator= () => {
 
             <Stack.Screen name="UserList" component={UserList} />
 
-            <Stack.Screen name="adminOrderList" component={adminOrderList} />
+            <Stack.Screen name="AdminOrderList" component={AdminOrderList} />
+            
+            {/* <Stack.Screen name="HandleUpdateStatus" component={HandleUpdateStatus} /> */}
+
             <Stack.Screen name="AdminCharts" component={AdminCharts}/>
             <Stack.Screen name="BarCharts" component={BarGraph} options={{ title: "Sales Per User" }}/>
             <Stack.Screen name="PieCharts" component={PieGraph} options={{ title: "Most Ordered Product" }}/>

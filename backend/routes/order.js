@@ -9,4 +9,5 @@ const { isAuthenticated } = require('../middlewares/Auth')
 router.post('/', isAuthenticated, orderControllers.newOrder); // Add this line to handle POST requests for creating orders
 router.get('/', isAuthenticated, orderControllers.myOrders);
 router.get('/admin', orderControllers.adminOrders)
+router.put('/:id', orderControllers.updateOrder)
 module.exports = router;

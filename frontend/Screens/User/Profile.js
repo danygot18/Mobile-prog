@@ -7,11 +7,16 @@ import baseURL from "../../assets/common/baseUrl"
 import { useFocusEffect } from '@react-navigation/native';
 import { getUser } from '../../utils/user';
 import SyncStorage from "sync-storage";
+import { useDispatch, useSelector } from 'react-redux'
+import { logoutAction } from '../../Redux/Actions/userActions'
 
 const UserProfile = ({ navigation }) => {
     const [userProfile, setUserProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const dispatch = useDispatch();
+
+
     console.log(SyncStorage.get('jwt'))
     const getProfile = async () => {
         
@@ -53,6 +58,7 @@ const UserProfile = ({ navigation }) => {
         try {
             await SyncStorage.remove('jwt');
             setIsAuthenticated(false);
+            dispatch(logoutAction())
             navigation.navigate('Login');
         } catch (error) {
             console.error(error);

@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Image, View, StyleSheet, Text, ScrollView, Button } from "react-native";
-import { Left, Right, Container, H1, Center, Heading } from 'native-base'
+import { Image, View, StyleSheet, Text, ScrollView } from "react-native";
 import EasyButton from "../../Shared/StyledComponents/EasyButton"
 import TrafficLight from '../../Shared/StyledComponents/TrafficLight'
 import { addToCart } from "../../Redux/Actions/cartActions";
 import { useDispatch } from 'react-redux';
+import { useNavigation } from "@react-navigation/native";
+import Swiper from "react-native-swiper";
 
-const SingleProduct = ({ route,navigation }) => {
-    console.log(route.params.brand)
-    
+const SingleProduct = ({ route }) => {
     const [name, setName] = useState(route.params.name);
-    const [images, setImages] = useState(route.params.images[0]);
+    const [images, setImages] = useState(route.params.images);
     const [brand, setBrands] = useState(route.params.brand.name);
     const [description, setDescription] = useState(route.params.description);
     const [countInStock, setCountInStock] = useState(route.params.countInStock);
     const dispatch = useDispatch();
+    const navigation = useNavigation();
 
-    // console.log(item)
     const [availability, setAvailability] = useState('')
     const [availabilityText, setAvailabilityText] = useState("")
 
@@ -38,102 +37,80 @@ const SingleProduct = ({ route,navigation }) => {
         }
     }, [])
 
+
+
     const handleAddToCart = () => {
         dispatch(addToCart({ ...route.params, quantity: 1 }));
         navigation.navigate('Home');
     };
 
     return (
-        <Center flexGrow={1}>
-            <ScrollView style={{ marginBottom: 80, padding: 5 }}>
-                <View>
-                    
-                    <Image
-                        source={{
-                            uri: images ? images : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png'
-                        }}
-                        resizeMode="contain"
-                        style={styles.image}
-                    />
-
-                </View> 
-                <View style={styles.contentContainer}>
-                    <Heading style={styles.contentHeader} size='xl'>{name}</Heading>
-                    <Text style={styles.contentText}>{brand}</Text>
-                </View>
-                <View style={styles.availabilityContainer}>
-                    <View style={styles.availability}>
-                        <Text style={{ marginRight: 10 }}>
-                            Availability: {availabilityText}
-                        </Text>
-                        {availability}
+        <View style={styles.container}>
+            <Swiper style={styles.wrapper} showsButtons={true}>
+                {images.map((image, index) => (
+                    <View key={index}>
+                        <Image
+                            source={{ uri: image }}
+                            style={styles.image}
+                        />
                     </View>
-                    <Text>{description}</Text>
-                </View>
+                ))}
+            </Swiper>
+            <View style={styles.contentContainer}>
+                <Text style={styles.name}>Product name: {name}</Text>
+                <Text style={styles.brand}>Brand: {brand}</Text>
+                <Text style={styles.description}>Description: {description}</Text>
+                <Text style={styles.availability}>Availability: {availabilityText}</Text>
+                <Text style={styles.countInStock}>Count in Stock: {countInStock}</Text>
                 <EasyButton
                     primary
                     medium
                     onPress={handleAddToCart}
                 >
-
-                    <Text style={{ color: "white" }}> Add</Text>
+                    <Text style={styles.buttonText}>Add to Cart</Text>
                 </EasyButton>
-            </ScrollView>
-
-        </Center >
-    )
-}
+            </View>
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
-        position: 'relative',
-        height: '100%',
-
+        flex: 1,
     },
-    imageContainer: {
-        backgroundColor: 'white',
-        padding: 0,
-        margin: 0
-    },
+    wrapper: {},
     image: {
         width: '100%',
-        height: undefined,
-        aspectRatio: 1
+        height: 300,
     },
     contentContainer: {
-        marginTop: 20,
-        justifyContent: 'center',
-        alignItems: 'center'
+        padding: 20,
     },
-    contentHeader: {
-        fontWeight: 'bold',
-        marginBottom: 20
-    },
-    contentText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 20
-    },
-    bottomContainer: {
-        flexDirection: 'row',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        backgroundColor: 'white'
-    },
-    price: {
+    name: {
         fontSize: 24,
-        margin: 20,
-        color: 'red'
+        fontWeight: 'bold',
+        marginBottom: 10,
     },
-    availabilityContainer: {
-        marginBottom: 20,
-        alignItems: "center"
+    brand: {
+        fontSize: 18,
+        marginBottom: 10,
+    },
+    description: {
+        fontSize: 16,
+        marginBottom: 10,
     },
     availability: {
-        flexDirection: 'row',
+        fontSize: 16,
         marginBottom: 10,
-    }
-})
+    },
+    countInStock: {
+        fontSize: 16,
+        marginBottom: 10,
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 18,
+    },
+});
 
-export default SingleProduct
+export default SingleProduct;
