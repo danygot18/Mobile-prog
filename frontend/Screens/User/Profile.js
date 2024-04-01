@@ -1,3 +1,4 @@
+// profile
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, ScrollView, Button, Image, StyleSheet } from 'react-native';
 import { Container } from "native-base"
@@ -15,7 +16,6 @@ const UserProfile = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const dispatch = useDispatch();
-
 
     console.log(SyncStorage.get('jwt'))
     const getProfile = async () => {
@@ -52,8 +52,6 @@ const UserProfile = ({ navigation }) => {
         }, [])
     );
 
-    
-
     const handleLogout = async () => {
         try {
             await SyncStorage.remove('jwt');
@@ -69,20 +67,19 @@ const UserProfile = ({ navigation }) => {
         <Container style={styles.container}>
             <ScrollView contentContainerStyle={styles.subContainer}>
                 <>
-                    <Text style={{ fontSize: 30 }}>{userProfile?.name}</Text>
+                    <Text style={styles.name}>{userProfile?.name}</Text>
                     {userProfile && userProfile?.image && (
                         <Image source={{ uri: userProfile.image }} style={styles.image} />
-
                     )}
-                    <View style={{ marginTop: 20 }}>
-                        <Text style={{ margin: 10 }}>Email: {userProfile?.email}</Text>
-                        <Text style={{ margin: 10 }}>Phone: {userProfile?.phone}</Text>
+                    <View style={styles.infoContainer}>
+                        <Text style={styles.infoText}>Email: {userProfile?.email}</Text>
+                        <Text style={styles.infoText}>Phone: {userProfile?.phone}</Text>
                     </View>
-                    <Button title="Logout" onPress={handleLogout} />
-                    <Button title= "Update" onPress= {() => navigation.navigate('UpdateProfile')} />
-                    
-                    <Button title= "Order" onPress= {() => navigation.navigate('OrderList')} />
-                    
+                    <View style={styles.buttonContainer}>
+                        <Button title="Logout" onPress={handleLogout} />
+                        <Button title="Update" onPress={() => navigation.navigate('UpdateProfile')} />
+                        <Button title="Order" onPress={() => navigation.navigate('OrderList')} />
+                    </View>
                 </>
             </ScrollView>
         </Container>
@@ -92,17 +89,37 @@ const UserProfile = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center"
+        justifyContent: "center",
+        alignItems: "center",
+        
     },
     subContainer: {
         alignItems: "center",
-        marginTop: 60
+        marginTop: 60,
+    },
+    name: {
+        fontSize: 30,
+        marginBottom: 20,
+        textAlign: "center",
     },
     image: {
         width: 200,
         height: 200,
         borderRadius: 100,
         marginTop: 20,
+    },
+    infoContainer: {
+        marginTop: 20,
+        alignItems: "center",
+    },
+    infoText: {
+        marginVertical: 10,
+    },
+    buttonContainer: {
+        marginTop: 20,
+        flexDirection: "row",
+        justifyContent: "space-around",
+        width: "80%",
     },
 });
 

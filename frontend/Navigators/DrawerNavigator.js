@@ -33,18 +33,12 @@ const Drawer = createDrawerNavigator();
 
 const getIcon = (screenName) => {
   switch (screenName) {
-    case "Inbox":
-      return "email";
-    case "Outbox":
-      return "send";
-    // case "Cart":
-    //   return "cart";
-    case "Product List":
+    case "Home":
+      return "home";
+    case "Products":
       return "archive";
-    case "Trash":
-      return "trash-can";
-    case "Spam":
-      return "alert-circle";
+    case "Admin Product List":
+      return "archive";
     default:
       return undefined;
   }
@@ -55,17 +49,15 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props} safeArea>
       <VStack space="6" my="2" mx="1">
         <Box px="4">
-          <Text bold color="gray.700">
-            Mail
-          </Text>
-          <Text fontSize="14" mt="1" color="gray.500" fontWeight="500">
-            john_doe@gmail.com
+          <Text fontSize="14" mt="1" color="gray.500" fontWeight="500" alignItems="center">
+            Dashboard
           </Text>
         </Box>
         <VStack divider={<Divider />} space="4">
           <VStack space="3">
             {props.state.routeNames.map((name, index) => (
               <Pressable
+                key={index}
                 px="5"
                 py="3"
                 rounded="md"
@@ -74,7 +66,7 @@ function CustomDrawerContent(props) {
                     ? "rgba(6, 182, 212, 0.1)"
                     : "transparent"
                 }
-                onPress={(event) => {
+                onPress={() => {
                   props.navigation.navigate(name);
                 }}
               >
@@ -98,49 +90,6 @@ function CustomDrawerContent(props) {
               </Pressable>
             ))}
           </VStack>
-          {/* <VStack space="5">
-            <Text fontWeight="500" fontSize="14" px="5" color="gray.500">
-              Labels
-            </Text>
-            <VStack space="3">
-              <Pressable px="5" py="3">
-                <HStack space="7" alignItems="center">
-                  <Icon
-                    color="gray.500"
-                    size="5"
-                    as={<MaterialCommunityIcons name="bookmark" />}
-                  />
-                  <Text color="gray.700" fontWeight="500">
-                    Family
-                  </Text>
-                </HStack>
-              </Pressable>
-              <Pressable px="5" py="2">
-                <HStack space="7" alignItems="center">
-                  <Icon
-                    color="gray.500"
-                    size="5"
-                    as={<MaterialCommunityIcons name="bookmark" />}
-                  />
-                  <Text color="gray.700" fontWeight="500">
-                    Friends
-                  </Text>
-                </HStack>
-              </Pressable>
-              <Pressable px="5" py="3">
-                <HStack space="7" alignItems="center">
-                  <Icon
-                    color="gray.500"
-                    size="5"
-                    as={<MaterialCommunityIcons name="bookmark" />}
-                  />
-                  <Text fontWeight="500" color="gray.700">
-                    Work
-                  </Text>
-                </HStack>
-              </Pressable>
-            </VStack>
-          </VStack> */}
         </VStack>
       </VStack>
     </DrawerContentScrollView>
@@ -150,7 +99,6 @@ function CustomDrawerContent(props) {
 const DrawerNavigator = () => {
   const { userInfo } = useSelector((state) => state.user);
   
-  console.log(userInfo)
   return (
     <Box safeArea flex={1}>
       <Drawer.Navigator
@@ -172,11 +120,11 @@ const DrawerNavigator = () => {
         {/* <Drawer.Screen name="Login" component={Main} initialParams={{ screen: 'User' }} /> */}
         {/* <Drawer.Screen name="Cart" component={Main} initialParams={{ screen: 'Cart' }} /> */}
       
-            <Drawer.Screen
-              name="Product List"
-              component={AdminNavigator}
-              initialParams={{ screen: "Admin" }}
-            />
+        <Drawer.Screen
+          name="Admin Product List"
+          component={AdminNavigator}
+          initialParams={{ screen: "Admin" }}
+        />
          
       </Drawer.Navigator>
     </Box>
