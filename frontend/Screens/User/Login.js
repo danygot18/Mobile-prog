@@ -13,6 +13,8 @@ import { authenticate, getToken, getUser } from "../../utils/user";
 import SyncStorage from "sync-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, loginAction } from "../../Redux/Actions/userActions";
+import { TouchableOpacity } from "react-native";
+import { Image } from "native-base";
 
 const Login = ({ navigation }) => {
   //   const navigation = useNavigation();
@@ -58,41 +60,61 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <FormContainer style={{ flex: 1, justifyContent: 'center', alignItems: 'center', color: 'black' }}>
-      
-    <Input
-      style={{ width: '80%', marginBottom: 20, }}
-      placeholder="Enter email"
-      value={email}
-      onChangeText={(text) => setEmail(text.toLowerCase())}
-    />
-    <Input
-      style={{ width: '80%', marginBottom: 20 }}
-      placeholder="Enter Password"
-      secureTextEntry={true}
-      value={password}
-      onChangeText={(text) => setPassword(text)}
-    />
-    {error && <Error message={error} />}
-    <Button
-      style={{ width: '80%', marginTop: 20, alignItems: 'center'  , backgroundColor: 'black'}}
-      large
-      primary
-      onPress={handleSubmit}
+    <FormContainer
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        color: "black",
+      }}
     >
-      <Text style={{ color: 'white', fontFamily: 'Roboto' }}>Login</Text>
-    </Button>
-    <Text style={{ marginTop: 20, fontFamily: 'Roboto' }}>Don't Have an Account yet?</Text>
-    <Button
-      style={{ width: '80%', marginTop: 20, alignItems: 'center' , backgroundColor: 'black'}}
-      large
-      secondary
-      onPress={() => navigation.navigate("Register")}
-    >
-      <Text style={{ color: 'white', fontFamily: 'Roboto' , backgroundColor: 'black' }}>Register</Text>
-    </Button>
-  </FormContainer>
-  
+      <Image
+        source={require("frontend/assets/aliba-bag.png")}
+        style={{ width: 180, height: 180, marginRight: 10 }}
+      />
+
+      <Input
+        style={{ width: "80%", marginBottom: 20 }}
+        placeholder="Enter email"
+        value={email}
+        onChangeText={(text) => setEmail(text.toLowerCase())}
+      />
+      <Input
+        style={{ width: "80%", marginBottom: 20 }}
+        placeholder="Enter Password"
+        secureTextEntry={true}
+        value={password}
+        onChangeText={(text) => setPassword(text)}
+      />
+      {error && <Error message={error} />}
+      <Button
+        style={{
+          width: "80%",
+          marginTop: 20,
+          alignItems: "center",
+          backgroundColor: "black",
+        }}
+        large
+        primary
+        onPress={handleSubmit}
+      >
+        <Text style={{ color: "white", fontFamily: "Roboto" }}>Login</Text>
+      </Button>
+      <Text style={{ marginTop: 20, fontFamily: "Roboto" }}>
+        <Text style={{ fontWeight: "bold" }}>Don't Have an Account yet?</Text>{" "}
+        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+          <Text
+            style={{
+              color: "black",
+              fontFamily: "Roboto",
+              textDecorationLine: "underline",
+            }}
+          >
+            Register
+          </Text>
+        </TouchableOpacity>
+      </Text>
+    </FormContainer>
   );
 };
 

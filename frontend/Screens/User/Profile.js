@@ -11,6 +11,7 @@ import SyncStorage from "sync-storage";
 import { useDispatch, useSelector } from 'react-redux'
 import { logoutAction } from '../../Redux/Actions/userActions'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FormContainer from "../../Shared/Form/FormContainer";
 
 const UserProfile = ({ navigation }) => {
     const [userProfile, setUserProfile] = useState(null);
@@ -91,22 +92,48 @@ const UserProfile = ({ navigation }) => {
     };
 
     return (
-<Container style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  <ScrollView contentContainerStyle={{ alignItems: "center", marginTop: 60 }}>
+<FormContainer style={{ flex: 1, justifyContent: 'center', alignItems: 'center', color: 'black' }}>
+  <ScrollView contentContainerStyle={{ alignItems: "center", marginTop: 0 }}>
     <>
       <MaterialIcons name="notifications" size={30} color="black" onPress={notifyOrderStatus} />
-      <Text style={{ fontSize: 30 }}>{userProfile?.name}</Text>
+      <Text style={{ fontSize: 30, fontFamily: 'Roboto', fontWeight: 'bold', color: '#333' }}>{userProfile?.name}</Text>
       {userProfile?.image && <Image source={{ uri: userProfile.image }} style={{ width: 200, height: 200, borderRadius: 100, marginTop: 20 }} />}
-      <Text style={{ marginVertical: 10 }}>Email: {userProfile?.email}</Text>
-      <Text style={{ marginVertical: 10 }}>Phone: {userProfile?.phone}</Text>
-      <View style={{ flexDirection: "row", justifyContent: "space-around", width: "80%" }}>
-        <Button title="Logout" onPress={handleLogout} style={{ backgroundColor: 'black' }} />
-        <Button title="Update" onPress={() => navigation.navigate('UpdateProfile')} style={{ backgroundColor: 'black' }} />
-        <Button title="Order" onPress={() => navigation.navigate('OrderList')} style={{ backgroundColor: 'black' }} />
-      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10, justifyContent: 'flex-start' }}>
+  <MaterialIcons name="email" size={24} color="#333" />
+  <Text style={{ marginLeft: 10, fontFamily: 'Roboto', fontWeight: 'bold', color: '#333' }}>{userProfile?.email}</Text>
+</View>
+<View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10, justifyContent: 'flex-start' }}>
+  <MaterialIcons name="phone" size={24} color="#333" />
+  <Text style={{ marginLeft: 10, fontFamily: 'Roboto', fontWeight: 'bold', color: '#333' }}>{userProfile?.phone}</Text>
+</View>
+<View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '90%', marginBottom: 20 }}>
+  <View>
+    <Button
+      title="Logout"
+      onPress={handleLogout}
+      style={{ backgroundColor: 'black' }}
+    />
+  </View>
+  <View>
+    <Button
+      title="Update"
+      onPress={() => navigation.navigate('UpdateProfile')}
+      style={{ backgroundColor: 'black' }}
+    />
+  </View>
+  <View>
+    <Button
+      title="Order"
+      onPress={() => navigation.navigate('OrderList')}
+      style={{ backgroundColor: 'black' }}
+    />
+  </View>
+</View>
+
     </>
   </ScrollView>
-</Container>
+</FormContainer>
+
 
 
     );
