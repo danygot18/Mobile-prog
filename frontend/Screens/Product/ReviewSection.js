@@ -7,10 +7,14 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  Modal,
+  TouchableHighlight,
+  TouchableOpacity
 } from "react-native";
 import axios from "axios";
 import baseURL from "../../assets/common/baseUrl";
 import SyncStorage from "sync-storage";
+import { Ionicons } from "@expo/vector-icons";
 
 const ReviewSection = ({ product, token }) => {
   console.log(product + " 8");
@@ -18,9 +22,14 @@ const ReviewSection = ({ product, token }) => {
   const [comments, setComments] = useState("");
   const [hasReviewed, setHasReviewed] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editingReviewId, setEditingReviewId] = useState(null);
+  const [editedRating, setEditedRating] = useState(0);
+  const [editedComments, setEditedComments] = useState("");
+  const [menuVisible, setMenuVisible] = useState(false);
 
   const user = JSON.parse(SyncStorage.get("user"));
-  
+
 
   const fetchReviews = async () => {
     try {
@@ -73,49 +82,163 @@ const ReviewSection = ({ product, token }) => {
     }
   };
 
-  return (
-    <ScrollView>
-      <View>
-        <Text style={styles.title}>Reviews</Text>
-        {reviews.map((review, index) => (
-          <View key={index} style={styles.reviewContainer}>
-            <View style={styles.avatarContainer}>
-              <Image
-                style={styles.avatar}
-                source={{ uri: review.user.image }}
-              />
-            </View>
-            <View style={styles.commentContainer}>
-              <Text style={styles.userName}>{review.user.name}</Text>
-              <Text>Comment: {review.comments}</Text>
-            </View>
-          </View>
-        ))}
+  const handleEditModalOpen = (reviewId, initialRating, initialComments) => {
+    setEditingReviewId(reviewId);
+    setEditedRating(initialRating);
+    setEditedComments(initialComments);
+    setEditModalVisible(true);
+  };
 
-        <>
-          <Text style={styles.title}>Leave a Review:</Text>
-          <View style={styles.ratingContainer}>
-            <Button title="-" onPress={handleDecrementRating} />
-            <Text>{rating}</Text>
-            <Button title="+" onPress={handleIncrementRating} />
-          </View>
-          <TextInput
-            style={styles.input}
-            placeholder="Comments"
-            value={comments}
-            onChangeText={(text) => setComments(text)}
-            multiline={true}
-            numberOfLines={4}
-          />
-          <Button
-            title="Submit Review"
-            onPress={handleReviewSubmit}
-            disabled={hasReviewed} // Disable the button if the user has already reviewed
-          />
-        </>
-      </View>
-    </ScrollView>
+  const handleEditReview = async () => {
+    try {
+      const reviewData = {
+        rating: editedRating,
+        comments: editedComments,
+      };
+
+      const response = await axios.put(
+        `${baseURL}/reviews/${editingReviewId}`,
+        reviewData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Review updated successfully:", response.data);
+      setEditModalVisible(false);
+      fetchReviews(); // Refresh reviews after updating
+    } catch (error) {
+      console.error("Error updating review:", error);
+    }
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    try {
+      const response = await axios.delete(`${baseURL}/reviews/${reviewId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Review deleted successfully:", response.data);
+      // After deleting the review, refresh the list of reviews
+      fetchReviews();
+    } catch (error) {
+      console.error("Error deleting review:", error);
+    }
+  };
+
+  const handleEllipsisPress = () => {
+    setMenuVisible(!menuVisible); // Toggle menu visibility
+  };
+
+  const handleCloseMenu = () => {
+    setMenuVisible(false);
+  };
+
+  return (
+    <TouchableOpacity style={styles.container} onPress={() => setMenuVisible(false)}>
+      <ScrollView>
+        <View>
+          <Text style={styles.title}>Reviews</Text>
+          {reviews.map((review, index) => (
+            <View key={index} style={styles.reviewContainer}>
+              <View style={styles.avatarContainer}>
+                <Image style={styles.avatar} source={{ uri: review.user.image }} />
+              </View>
+              <View style={styles.commentContainer}>
+                <View style={styles.header}>
+                  <Text style={styles.userName}>{review.user.name}</Text>
+                  {user._id === review.user._id && (
+                    <View style={styles.buttonContainer}>
+                      <TouchableHighlight
+                        style={[styles.button, styles.ellipsisButton]}
+                        onPress={() => handleEllipsisPress(review._id)}
+                      >
+                        <Ionicons name="ellipsis-horizontal" size={24} color="black" />
+                      </TouchableHighlight>
+                    </View>
+                  )}
+                </View>
+                <Text>Comment: {review.comments}</Text>
+                {/* Render menu if visible */}
+                {menuVisible && (
+                  <View style={styles.menu}>
+                    <TouchableHighlight
+                      style={[styles.menuItem, styles.editButton]}
+                      onPress={() =>
+                        handleEditModalOpen(review._id, review.rating, review.comments)
+                      }
+                    >
+                      <Ionicons name="ios-create-outline" size={24} color="black" />
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                      style={[styles.menuItem, styles.deleteButton]}
+                      onPress={() => handleDeleteReview(review._id)}
+                    >
+                      <Ionicons name="ios-trash-outline" size={24} color="red" />
+                    </TouchableHighlight>
+                  </View>
+                )}
+              </View>
+            </View>
+          ))}
+  
+          <>
+            <Text style={styles.title}>Leave a Review:</Text>
+            <View style={styles.ratingContainer}>
+              <Button title="-" onPress={handleDecrementRating} />
+              <Text>{rating}</Text>
+              <Button title="+" onPress={handleIncrementRating} />
+            </View>
+            <TextInput
+              style={styles.input}
+              placeholder="Comments"
+              value={comments}
+              onChangeText={(text) => setComments(text)}
+              multiline={true}
+              numberOfLines={4}
+            />
+            <Button
+              title="Submit Review"
+              onPress={handleReviewSubmit}
+              disabled={hasReviewed} // Disable the button if the user has already reviewed
+            />
+          </>
+  
+          {/* Modal */}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={editModalVisible}
+            onRequestClose={() => setEditModalVisible(false)}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalTitle}>Edit Review</Text>
+                <View style={styles.modalRatingContainer}>
+                  <Button title="-" onPress={() => setEditedRating(Math.max(1, editedRating - 1))} />
+                  <Text>{editedRating}</Text>
+                  <Button title="+" onPress={() => setEditedRating(Math.min(5, editedRating + 1))} />
+                </View>
+                <TextInput
+                  style={styles.modalInput}
+                  placeholder="Comments"
+                  value={editedComments}
+                  onChangeText={(text) => setEditedComments(text)}
+                  multiline={true}
+                  numberOfLines={4}
+                />
+                <Button title="Save" onPress={handleEditReview} />
+              </View>
+            </View>
+          </Modal>
+        </View>
+      </ScrollView>
+    </TouchableOpacity>
   );
+  
 };
 
 const styles = StyleSheet.create({
@@ -160,6 +283,92 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 20,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalTitle: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  modalRatingContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 15,
+    width: "100%",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  button: {
+    marginLeft: 10,
+    padding: 5,
+  },
+  ellipsisButton: {
+    backgroundColor: "#eee",
+  },
+  menuBackground: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background to cover the screen
+    zIndex: 0, // Place behind the menu
+  },
+  menu: {
+    position: 'absolute',
+    top: -40, // Adjust the distance from the ellipsis icon
+    right: 10,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    zIndex: 1,
+  },
+  menuItemContainer: {
+    flexDirection: "row",
+  },
+  menuItem: {
+    padding: 5,
   },
 });
 

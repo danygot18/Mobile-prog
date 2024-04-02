@@ -15,12 +15,6 @@ exports.createReview = async (req, res) => {
             // If a review already exists, you can choose to reject the new submission
             return res.status(400).json({ error: "You have already submitted a review for this product." });
         }
-
-        // Create a new review instance
-        // const newReview = new Review({ user, product, rating, comments });
-
-        // Save the review to the database
-        // const savedReview = await newReview.save();
         
         const savedReview = await Review.create(req.body)
         // Respond with the saved review
@@ -53,7 +47,54 @@ exports.getReviews = async (req, res) => {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
     }
-  };
+};
 
+exports.updateReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rating, comments } = req.body;
 
+    // Check if the review exists
+    const existingReview = await Review.findById(id);
+
+    if (!existingReview) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+
+    // Update the review fields
+    existingReview.rating = rating;
+    existingReview.comments = comments;
+
+    // Save the updated review
+    const updatedReview = await existingReview.save();
+
+    // Respond with the updated review
+    res.status(200).json(updatedReview);
+  } catch (error) {
+    console.error("Error updating review:", error);
+    res.status(500).json({ error: "Could not update review" });
+  }
+};
+
+exports.deleteReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Check if the review exists
+    const existingReview = await Review.findById(id);
+
+    if (!existingReview) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+
+    // Delete the review
+    await existingReview.remove();
+
+    // Respond with a success message
+    res.status(200).json({ message: "Review deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting review:", error);
+    res.status(500).json({ error: "Could not delete review" });
+  }
+};
 
