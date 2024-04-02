@@ -58,29 +58,41 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <FormContainer>
-      <Input
-        placeholder="Enter email"
-        value={email}
-        onChangeText={(text) => setEmail(text.toLowerCase())}
-      />
-      <Input
-        placeholder="Enter Password"
-        secureTextEntry={true}
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
-      {error && <Error message={error} />}
-      <Button large primary onPress={handleSubmit}>
-        <Text style={{ color: "white" }}>Login</Text>
-      </Button>
-      <View style={{ marginTop: 20, alignItems: "center" }}>
-        <Text>Don't Have an Account yet?</Text>
-        <Button large secondary onPress={() => navigation.navigate("Register")}>
-          <Text style={{ color: "white" }}>Register</Text>
-        </Button>
-      </View>
-    </FormContainer>
+    <FormContainer style={{ flex: 1, justifyContent: 'center', alignItems: 'center', color: 'black' }}>
+      
+    <Input
+      style={{ width: '80%', marginBottom: 20, }}
+      placeholder="Enter email"
+      value={email}
+      onChangeText={(text) => setEmail(text.toLowerCase())}
+    />
+    <Input
+      style={{ width: '80%', marginBottom: 20 }}
+      placeholder="Enter Password"
+      secureTextEntry={true}
+      value={password}
+      onChangeText={(text) => setPassword(text)}
+    />
+    {error && <Error message={error} />}
+    <Button
+      style={{ width: '80%', marginTop: 20, alignItems: 'center'  , backgroundColor: 'black'}}
+      large
+      primary
+      onPress={handleSubmit}
+    >
+      <Text style={{ color: 'white', fontFamily: 'Roboto' }}>Login</Text>
+    </Button>
+    <Text style={{ marginTop: 20, fontFamily: 'Roboto' }}>Don't Have an Account yet?</Text>
+    <Button
+      style={{ width: '80%', marginTop: 20, alignItems: 'center' , backgroundColor: 'black'}}
+      large
+      secondary
+      onPress={() => navigation.navigate("Register")}
+    >
+      <Text style={{ color: 'white', fontFamily: 'Roboto' , backgroundColor: 'black' }}>Register</Text>
+    </Button>
+  </FormContainer>
+  
   );
 };
 

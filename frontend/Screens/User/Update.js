@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 const UpdateProfile = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
     const [avatar, setAvatar] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState('default_avatar.jpg');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -129,6 +130,7 @@ const UpdateProfile = () => {
                 value={email}
                 onChangeText={setEmail}
             />
+           
             <Button title="Update Profile" onPress={handleUpdateProfile} />
             
             {isUpdated && <Text>Profile updated successfully!</Text>}

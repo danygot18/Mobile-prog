@@ -110,7 +110,7 @@ const Cart = () => {
                 )}
             <VStack style={styles.bottomContainer} w='100%' justifyContent='space-between'>
                 <HStack justifyContent="space-between">
-                    <Text style={styles.price}>$ {total.toFixed(2)}</Text>
+                    <Text style={styles.price}>₱ {total.toFixed(2)}</Text>
                 </HStack>
                 <HStack justifyContent="space-between">
                     <EasyButton

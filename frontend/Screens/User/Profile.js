@@ -91,64 +91,62 @@ const UserProfile = ({ navigation }) => {
     };
 
     return (
-        <Container style={styles.container}>
-            <ScrollView contentContainerStyle={styles.subContainer}>
-                <>
-                <MaterialIcons name="notifications" size={30} color="black" onPress={notifyOrderStatus} />
-                    <Text style={{ fontSize: 30 }}>{userProfile?.name}</Text>
-                    {userProfile && userProfile?.image && (
-                        <Image source={{ uri: userProfile.image }} style={styles.image} />
-                    )}
-                    <View style={styles.infoContainer}>
-                        <Text style={styles.infoText}>Email: {userProfile?.email}</Text>
-                        <Text style={styles.infoText}>Phone: {userProfile?.phone}</Text>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <Button title="Logout" onPress={handleLogout} />
-                        <Button title="Update" onPress={() => navigation.navigate('UpdateProfile')} />
-                        <Button title="Order" onPress={() => navigation.navigate('OrderList')} />
-                    </View>
-                </>
-            </ScrollView>
-        </Container>
+<Container style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+  <ScrollView contentContainerStyle={{ alignItems: "center", marginTop: 60 }}>
+    <>
+      <MaterialIcons name="notifications" size={30} color="black" onPress={notifyOrderStatus} />
+      <Text style={{ fontSize: 30 }}>{userProfile?.name}</Text>
+      {userProfile?.image && <Image source={{ uri: userProfile.image }} style={{ width: 200, height: 200, borderRadius: 100, marginTop: 20 }} />}
+      <Text style={{ marginVertical: 10 }}>Email: {userProfile?.email}</Text>
+      <Text style={{ marginVertical: 10 }}>Phone: {userProfile?.phone}</Text>
+      <View style={{ flexDirection: "row", justifyContent: "space-around", width: "80%" }}>
+        <Button title="Logout" onPress={handleLogout} style={{ backgroundColor: 'black' }} />
+        <Button title="Update" onPress={() => navigation.navigate('UpdateProfile')} style={{ backgroundColor: 'black' }} />
+        <Button title="Order" onPress={() => navigation.navigate('OrderList')} style={{ backgroundColor: 'black' }} />
+      </View>
+    </>
+  </ScrollView>
+</Container>
+
+
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         justifyContent: "center",
+//         alignItems: "center",
         
-    },
-    subContainer: {
-        alignItems: "center",
-        marginTop: 60,
-    },
-    name: {
-        fontSize: 30,
-        marginBottom: 20,
-        textAlign: "center",
-    },
-    image: {
-        width: 200,
-        height: 200,
-        borderRadius: 100,
-        marginTop: 20,
-    },
-    infoContainer: {
-        marginTop: 20,
-        alignItems: "center",
-    },
-    infoText: {
-        marginVertical: 10,
-    },
-    buttonContainer: {
-        marginTop: 20,
-        flexDirection: "row",
-        justifyContent: "space-around",
-        width: "80%",
-    },
-});
+//     },
+//     subContainer: {
+//         alignItems: "center",
+//         marginTop: 60,
+//     },
+//     name: {
+//         fontSize: 30,
+//         marginBottom: 20,
+//         textAlign: "center",
+//     },
+//     image: {
+//         width: 200,
+//         height: 200,
+//         borderRadius: 100,
+//         marginTop: 20,
+//     },
+//     infoContainer: {
+//         marginTop: 20,
+//         alignItems: "center",
+//     },
+//     infoText: {
+//         marginVertical: 10,
+//     },
+//     buttonContainer: {
+//         marginTop: 20,
+//         flexDirection: "row",
+//         justifyContent: "space-around",
+//         width: "80%",
+//     },
+// });
 
 export default UserProfile;
