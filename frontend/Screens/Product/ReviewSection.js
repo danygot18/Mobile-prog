@@ -31,20 +31,27 @@ const ReviewSection = ({ product, token }) => {
   const user = JSON.parse(SyncStorage.get("user"));
 
 
-  useEffect(() => {
-    const fetchReviewsAndCheckReviewStatus = async () => {
-      try {
-        const response = await axios.get(`${baseURL}/reviews?id=${product._id}`);
-        setReviews(response.data);
-        // Check if the user has already reviewed the current product
-        if (response.data.some(review => review.user._id === user._id)) {
+  const fetchReviewsAndCheckReviewStatus = async () => {
+    try {
+      const response = await axios.get(`${baseURL}/reviews?id=${product._id}`);
+      const orderResponse = await axios.get(`${baseURL}/orders/admin`);
+      setReviews(response.data);
+      // Check if the user has already reviewed the current product
+      if (response.data.some(review => review.user._id === user._id)) {
+        setHasReviewed(true);
+      }
+      if (orderResponse.data && Array.isArray(orderResponse.data)) {
+        if (orderResponse.data.some(order => order.user === user._id && order.orderItems.some(item => item.id === product._id))) {
           setHasReviewed(true);
         }
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
       }
-    };
-  
+
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchReviewsAndCheckReviewStatus();
   }, []);
 
@@ -80,6 +87,7 @@ const ReviewSection = ({ product, token }) => {
       console.log("Review submitted successfully:", response.data);
       setRating(1); // Reset rating to 1 after submission
       setComments(""); // Clear comments after submission
+      fetchReviewsAndCheckReviewStatus();
     } catch (error) {
       console.error("Error submitting review:", error);
     }
@@ -111,7 +119,7 @@ const ReviewSection = ({ product, token }) => {
 
       console.log("Review updated successfully:", response.data);
       setEditModalVisible(false);
-      fetchReviews(); // Refresh reviews after updating
+      fetchReviewsAndCheckReviewStatus(); // Refresh reviews after updating
     } catch (error) {
       console.error("Error updating review:", error);
     }
@@ -126,7 +134,7 @@ const ReviewSection = ({ product, token }) => {
       });
       console.log("Review deleted successfully:", response.data);
       // After deleting the review, refresh the list of reviews
-      fetchReviews();
+      fetchReviewsAndCheckReviewStatus();
     } catch (error) {
       console.error("Error deleting review:", error);
     }
@@ -190,25 +198,27 @@ const ReviewSection = ({ product, token }) => {
 
           {!hasReviewed && (
             <>
-              <Text style={styles.title}>Leave a Review:</Text>
-              <View style={styles.ratingContainer}>
-                <Button title="-" onPress={handleDecrementRating} />
-                <Text>{rating}</Text>
-                <Button title="+" onPress={handleIncrementRating} />
+              <View>
+                <Text style={styles.title}>Leave a Review:</Text>
+                <View style={styles.ratingContainer}>
+                  <Button title="-" onPress={handleDecrementRating} />
+                  <Text>{rating}</Text>
+                  <Button title="+" onPress={handleIncrementRating} />
+                </View>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Comments"
+                  value={comments}
+                  onChangeText={(text) => setComments(text)}
+                  multiline={true}
+                  numberOfLines={4}
+                />
+                <Button
+                  title="Submit Review"
+                  onPress={handleReviewSubmit}
+                  disabled={hasReviewed} // Disable the button if the user has already reviewed
+                />
               </View>
-              <TextInput
-                style={styles.input}
-                placeholder="Comments"
-                value={comments}
-                onChangeText={(text) => setComments(text)}
-                multiline={true}
-                numberOfLines={4}
-              />
-              <Button
-                title="Submit Review"
-                onPress={handleReviewSubmit}
-                disabled={hasReviewed} // Disable the button if the user has already reviewed
-              />
             </>
           )}
 
