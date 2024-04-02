@@ -22,6 +22,7 @@ const Item = ({ item, navigation }) => {
       <View>
         <Text> Name: {item.name}</Text>
         <Text> Email: {item.email}</Text>
+        
       </View>
       {/* <View style={{ flexDirection: 'row' }}>
                 <EasyButton

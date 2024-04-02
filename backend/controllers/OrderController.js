@@ -248,7 +248,7 @@ exports.adminOrders = async (req, res, next) => {
 
 exports.updateOrder = async (req, res, next) => {
   const order = await Order.findById(req.params.id);
-
+  console.log(req.body)
   if (order.orderStatus === "Delivered") {
     return res
       .status(404)
@@ -259,7 +259,7 @@ exports.updateOrder = async (req, res, next) => {
   //     await updateStock(item.product, item.quantity)
   // })
 
-  order.orderStatus = req.body.status;
+  order.orderStatus = req.body.orderStatus;
   order.deliveredAt = Date.now();
   await order.save();
 
