@@ -20,7 +20,7 @@ const Main = () => {
   return (
     
       <Tab.Navigator
-            initialRouteName="Home"
+            initialRouteName="Profile"
             screenOptions={ {
                 tabBarHideOnKeyboard: true,
                 tabBarShowLabel: false,
@@ -42,7 +42,7 @@ const Main = () => {
                     }
                 }}
             />
-            {/* <Tab.Screen
+            <Tab.Screen
                 name="Admin"
                 component={AdminNavigator}
                 options={{
@@ -56,7 +56,7 @@ const Main = () => {
                         />
                     }
                 }}
-            /> */}
+            />
 
             <Tab.Screen
                 name="Cart"

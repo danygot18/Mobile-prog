@@ -18,6 +18,9 @@ import UserList from "../Screens/Admin/User/UserList"
 
 import AdminOrderList from "../Screens/Admin/Order/OrderList"
 import HandleUpdateStatus from "../Screens/Admin/Order/UpdateOrder"
+
+import UpdateOrder from "../Screens/Admin/Order/UpdateOrder"
+import UpdateUser from "../Screens/Admin/User/UpdateUser"
 const Stack = createStackNavigator();
 
 const AdminNavigator= () => {
@@ -41,9 +44,10 @@ const AdminNavigator= () => {
 
             <Stack.Screen name="UserList" component={UserList} />
 
-            <Stack.Screen name="AdminOrderList" component={AdminOrderList} />
+            <Stack.Screen name="UpdateOrder" component={UpdateOrder} />
+            <Stack.Screen name="UpdateUser" component={UpdateUser} />
             
-            {/* <Stack.Screen name="HandleUpdateStatus" component={HandleUpdateStatus} /> */}
+            <Stack.Screen name="AdminOrderList" component={AdminOrderList} />
 
             <Stack.Screen name="AdminCharts" component={AdminCharts}/>
             <Stack.Screen name="BarCharts" component={BarGraph} options={{ title: "Sales Per User" }}/>

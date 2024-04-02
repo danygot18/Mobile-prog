@@ -10,4 +10,5 @@ router.post('/', isAuthenticated, orderControllers.newOrder); // Add this line t
 router.get('/', isAuthenticated, orderControllers.myOrders);
 router.get('/admin', orderControllers.adminOrders)
 router.put('/:id', orderControllers.updateOrder)
+router.get('/:id', orderControllers.getSingleOrder)
 module.exports = router;

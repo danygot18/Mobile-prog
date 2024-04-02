@@ -11,7 +11,12 @@ router.post('/login', userController.login );
 router.get('/logout', userController.Logout);
 router.get('/profile', isAuthenticated, userController.Profile);
 router.put('/profile/update',upload.single('image'), isAuthenticated, userController.UpdateProfile)
-router.get('/', userController.getUser)
+
+router.get('/', userController.getUser);
+router.get('/:id', userController.getUserDetails);
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser)
+
 
 module.exports = router;
 
