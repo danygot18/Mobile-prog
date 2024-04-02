@@ -31,18 +31,21 @@ const ReviewSection = ({ product, token }) => {
   const user = JSON.parse(SyncStorage.get("user"));
 
 
-  const fetchReviews = async () => {
-    try {
-      const response = await axios.get(`${baseURL}/reviews?id=${product._id}`);
-      setReviews(response.data);
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-    }
-  };
-
-  // Fetch reviews when the component mounts
   useEffect(() => {
-    fetchReviews();
+    const fetchReviewsAndCheckReviewStatus = async () => {
+      try {
+        const response = await axios.get(`${baseURL}/reviews?id=${product._id}`);
+        setReviews(response.data);
+        // Check if the user has already reviewed the current product
+        if (response.data.some(review => review.user._id === user._id)) {
+          setHasReviewed(true);
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+  
+    fetchReviewsAndCheckReviewStatus();
   }, []);
 
   const handleIncrementRating = () => {
@@ -184,29 +187,31 @@ const ReviewSection = ({ product, token }) => {
               </View>
             </View>
           ))}
-  
-          <>
-            <Text style={styles.title}>Leave a Review:</Text>
-            <View style={styles.ratingContainer}>
-              <Button title="-" onPress={handleDecrementRating} />
-              <Text>{rating}</Text>
-              <Button title="+" onPress={handleIncrementRating} />
-            </View>
-            <TextInput
-              style={styles.input}
-              placeholder="Comments"
-              value={comments}
-              onChangeText={(text) => setComments(text)}
-              multiline={true}
-              numberOfLines={4}
-            />
-            <Button
-              title="Submit Review"
-              onPress={handleReviewSubmit}
-              disabled={hasReviewed} // Disable the button if the user has already reviewed
-            />
-          </>
-  
+
+          {!hasReviewed && (
+            <>
+              <Text style={styles.title}>Leave a Review:</Text>
+              <View style={styles.ratingContainer}>
+                <Button title="-" onPress={handleDecrementRating} />
+                <Text>{rating}</Text>
+                <Button title="+" onPress={handleIncrementRating} />
+              </View>
+              <TextInput
+                style={styles.input}
+                placeholder="Comments"
+                value={comments}
+                onChangeText={(text) => setComments(text)}
+                multiline={true}
+                numberOfLines={4}
+              />
+              <Button
+                title="Submit Review"
+                onPress={handleReviewSubmit}
+                disabled={hasReviewed} // Disable the button if the user has already reviewed
+              />
+            </>
+          )}
+
           {/* Modal */}
           <Modal
             animationType="slide"
@@ -238,7 +243,7 @@ const ReviewSection = ({ product, token }) => {
       </ScrollView>
     </TouchableOpacity>
   );
-  
+
 };
 
 const styles = StyleSheet.create({
