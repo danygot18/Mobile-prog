@@ -62,55 +62,40 @@ const handleSubmit = () => {
 }
 
   return (
-    <FormContainer>
-      <Input
-        placeholder={"Enter email"}
-        name={"email"}
-        id={"email"}
-        value={email}
-        onChangeText={(text) => setEmail(text.toLowerCase())}
-      />
-      <Input
-        placeholder={"Enter Password"}
-        name={"password"}
-        id={"password"}
-        secureTextEntry={true}
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
-      <View style={styles.buttonGroup}>
-        {error ? <Error message={error} /> : null}
-        <Button
-          large
-          primary
-          onPress={() => handleSubmit()}
-        >
-          <Text style={{ color: "white" }}>Login</Text>
-        </Button>
-      </View>
-      <View style={[{ marginTop: 40 }, styles.buttonGroup]}>
-        <Text style={styles.middleText}>Don't Have an Account yet?</Text>
-        <Button
-          large
-          secondary
-          onPress={() => navigation.navigate("Register")}
-        >
-          <Text style={{ color: "white" }}>Register</Text>
-        </Button>
-      </View>
-    </FormContainer>
+<FormContainer>
+  <Input
+    placeholder="Enter email"
+    value={email}
+    onChangeText={(text) => setEmail(text.toLowerCase())}
+  />
+  <Input
+    placeholder="Enter Password"
+    secureTextEntry={true}
+    value={password}
+    onChangeText={(text) => setPassword(text)}
+  />
+  {error && <Error message={error} />}
+  <Button
+    large
+    primary
+    onPress={handleSubmit}
+  >
+    <Text style={{ color: "white" }}>Login</Text>
+  </Button>
+  <View style={{ marginTop: 20, alignItems: "center" }}>
+    <Text>Don't Have an Account yet?</Text>
+    <Button
+      large
+      secondary
+      onPress={() => navigation.navigate("Register")}
+    >
+      <Text style={{ color: "white" }}>Register</Text>
+    </Button>
+  </View>
+</FormContainer>
+
   );
 };
 
-const styles = StyleSheet.create({
-  buttonGroup: {
-    width: "80%",
-    alignItems: "center",
-  },
-  middleText: {
-    marginBottom: 20,
-    alignSelf: "center",
-  },
-});
 
 export default Login;
