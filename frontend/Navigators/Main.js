@@ -24,7 +24,7 @@ const Main = () => {
             screenOptions={ {
                 tabBarHideOnKeyboard: true,
                 tabBarShowLabel: false,
-                tabBarActiveTintColor: '#e91e63'
+                tabBarActiveTintColor: 'black'
             }}
         >
           <Tab.Screen
