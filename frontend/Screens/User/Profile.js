@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutAction } from "../../Redux/Actions/userActions";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import FormContainer from "../../Shared/Form/FormContainer";
+import { TouchableOpacity } from "react-native";
 
 const UserProfile = ({ navigation }) => {
   const [userProfile, setUserProfile] = useState(null);
@@ -119,7 +120,7 @@ const UserProfile = ({ navigation }) => {
           {/* <MaterialIcons name="local-shipping" size={30} color="black" onPress={notifyOrderStatus} /> */}
           <Text
             style={{
-              fontSize: 30,
+              fontSize: 40,
               fontFamily: "Roboto",
               fontWeight: "bold",
               color: "#333",
@@ -146,7 +147,7 @@ const UserProfile = ({ navigation }) => {
               justifyContent: "flex-start",
             }}
           >
-            <MaterialIcons name="email" size={24} color="#333" />
+            <MaterialIcons name="email" size={30} color="#333" />
             <Text
               style={{
                 marginLeft: 10,
@@ -166,7 +167,7 @@ const UserProfile = ({ navigation }) => {
               justifyContent: "flex-start",
             }}
           >
-            <MaterialIcons name="phone" size={24} color="#333" />
+            <MaterialIcons name="phone" size={30} color="#333" />
             <Text
               style={{
                 marginLeft: 10,
@@ -178,35 +179,75 @@ const UserProfile = ({ navigation }) => {
               {userProfile?.phone}
             </Text>
           </View>
+
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-around",
-              width: "90%",
+              width: "85%",
               marginBottom: 20,
+              marginTop: 50
             }}
           >
-            <View>
-              <Button
-                title="Logout"
-                onPress={handleLogout}
-                style={{ backgroundColor: "black" }}
+            <TouchableOpacity
+              onPress={() => navigation.navigate("UpdateProfile")}
+              style={{
+                backgroundColor: "black",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingHorizontal: 20,
+                width: "30%",
+                height: 40,
+              }}
+            >
+              <MaterialIcons
+                name="app-registration"
+                size={40}
+                color="white"
+                style={{ marginRight: 0 }}
               />
-            </View>
-            <View>
-              <Button
-                title="Update"
-                onPress={() => navigation.navigate("UpdateProfile")}
-                style={{ backgroundColor: "black" }}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate("OrderList")}
+              style={{
+                backgroundColor: "black",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingHorizontal: 20,
+                width: "30%",
+                height: 40,
+              }}
+            >
+              <MaterialIcons
+                name="local-shipping"
+                size={40}
+                color="white"
+                style={{ marginRight: 0 }}
               />
-            </View>
-            <View>
-              <Button
-                title="Order"
-                onPress={() => navigation.navigate("OrderList")}
-                style={{ backgroundColor: "black" }}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={handleLogout}
+              style={{
+                backgroundColor: "black",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingHorizontal: 20,
+                width: "30%",
+                height: 40,
+              }}
+            >
+              <MaterialIcons
+                name="logout"
+                size={40}
+                color="white"
+                style={{ marginRight: 0 }}
               />
-            </View>
+            </TouchableOpacity>
           </View>
         </>
       </ScrollView>
