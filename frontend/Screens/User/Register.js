@@ -224,50 +224,70 @@ const Register = (props) => {
         <View style={styles.buttonGroup}>
           {error ? <Error message={error} /> : null}
         </View>
-        <View style={{ marginBottom: 10, width: "40%" }}>
-  <Button
-    variant={"ghost"}
-    onPress={() => register()}
-    style={{
-      backgroundColor: "black",
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      paddingHorizontal: 10,
-      width: "100%",
-    }}
-  >
-    <MaterialIcons
-      name="person-add"
-      size={24}
-      color="white"
-      style={{ marginRight: 5 }}
-    />
-    <Text style={{ color: "white" }}>Register</Text>
-  </Button>
-</View>
 
+        {/* <Button
+        style={{
+          width: "80%",
+          marginTop: 20,
+          alignItems: "center",
+          backgroundColor: "black",
+        }}
+        large
+        primary
+        onPress={handleSubmit}
+      >
+        <Text style={{ color: "white", fontFamily: "Roboto" }}>Login</Text>
+      </Button>
+ */}
 
-        <View style={{ marginBottom: 10, width: "40%" }}>
+        {/* <View style={{ marginBottom: 10, width: "40%" }}>
           <Button
             variant={"ghost"}
-            onPress={getLocation}
+            onPress={() => register()}
             style={{
               backgroundColor: "black",
               flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
+              display: "flex",
               paddingHorizontal: 10,
               width: "100%",
             }}
           >
             <MaterialIcons
-              name="location-on"
+              name="person-add"
               size={24}
               color="white"
               style={{ marginRight: 5 }}
             />
-            <Text style={{ color: "white" }}>Location</Text>
+            <Text style={{ color: "white", fontFamily: "Roboto" }}>
+              Register
+            </Text>
+          </Button>
+        </View> */}
+        
+        <View
+          onPress={() => register()}
+          style={{
+            borderRadius: 10,
+            width: "40%",
+            height: 70,
+            marginBottom: 10,
+            backgroundColor: "black",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <MaterialIcons
+            name="person-add"
+            size={30}
+            color="white"
+            // style={{ marginRight: 5 }}
+          />
+          <Button variant={"ghost"}>
+            <Text style={{ color: "white", fontFamily: "Roboto", fontSize: 20 }}>
+              Register
+            </Text>
           </Button>
         </View>
 
@@ -290,9 +310,15 @@ const Register = (props) => {
               color="white"
               style={{ marginRight: 5 }}
             />
-            <Text style={{ color: "white" }}>Back to Login</Text>
+            <Text style={{ color: "white", fontFamily: "Roboto", fontSize: 10}}>
+              Back to Login
+            </Text>
           </Button>
         </View>
+
+
+
+
       </FormContainer>
     </KeyboardAwareScrollView>
   );
