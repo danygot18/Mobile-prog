@@ -167,7 +167,7 @@ const Products = (props) => {
                     </EasyButton>
                     <EasyButton
                         medium
-                        onPress={() => navigation.navigate("AdminCharts")}
+                        onPress={() => navigation.navigate("UserList")}
                         style={{ backgroundColor: "black", marginBottom: 5 }}
                     >
                         <Icon name="user" size={18} color="white" />

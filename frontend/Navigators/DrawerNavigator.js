@@ -37,7 +37,7 @@ const getIcon = (screenName) => {
       return "home";
     case "Products":
       return "archive";
-    case "Admin Product List":
+    case "Admin Dashboard":
       return "archive";
     default:
       return undefined;
@@ -121,7 +121,7 @@ const DrawerNavigator = () => {
         {/* <Drawer.Screen name="Cart" component={Main} initialParams={{ screen: 'Cart' }} /> */}
       
         <Drawer.Screen
-          name="Admin Product List"
+          name="Admin Dashboard"
           component={AdminNavigator}
           initialParams={{ screen: "Admin" }}
         />

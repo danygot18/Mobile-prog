@@ -21,7 +21,7 @@ const Item = (props) => {
     return (
         <View style={styles.item}>
             <View>
-                <Text> Name: {props.item.name}</Text>
+                <Text> Name: {props.item.name.substring(0, 11)}</Text>
                 <Text> Location: {props.item.location}</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
