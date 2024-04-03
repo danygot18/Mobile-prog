@@ -225,33 +225,9 @@ const Register = (props) => {
           {error ? <Error message={error} /> : null}
         </View>
         <View style={{ marginBottom: 10, width: "40%" }}>
-  <Button
-    variant={"ghost"}
-    onPress={() => register()}
-    style={{
-      backgroundColor: "black",
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      paddingHorizontal: 10,
-      width: "100%",
-    }}
-  >
-    <MaterialIcons
-      name="person-add"
-      size={24}
-      color="white"
-      style={{ marginRight: 5 }}
-    />
-    <Text style={{ color: "white" }}>Register</Text>
-  </Button>
-</View>
-
-
-        <View style={{ marginBottom: 10, width: "40%" }}>
           <Button
             variant={"ghost"}
-            onPress={getLocation}
+            onPress={() => register()}
             style={{
               backgroundColor: "black",
               flexDirection: "row",
@@ -262,12 +238,14 @@ const Register = (props) => {
             }}
           >
             <MaterialIcons
-              name="location-on"
+              name="person-add"
               size={24}
               color="white"
               style={{ marginRight: 5 }}
             />
-            <Text style={{ color: "white" }}>Location</Text>
+            <Text style={{ color: "white", fontFamily: "Roboto" }}>
+              Register
+            </Text>
           </Button>
         </View>
 
@@ -290,7 +268,9 @@ const Register = (props) => {
               color="white"
               style={{ marginRight: 5 }}
             />
-            <Text style={{ color: "white" }}>Back to Login</Text>
+            <Text style={{ color: "white", fontFamily: "Roboto" }}>
+              Back to Login
+            </Text>
           </Button>
         </View>
       </FormContainer>
