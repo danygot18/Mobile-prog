@@ -9,9 +9,13 @@ const Banner = () => {
 
     useEffect(() => {
         setBannerData([
-            "https://i.pinimg.com/564x/fa/b0/fd/fab0fd3277de9af0aa76abdb2675389b.jpg",
-            "https://i.pinimg.com/564x/35/1b/9a/351b9abfa0a0b4eefd5f43e5c57d4fb1.jpg",
-            "https://i.pinimg.com/564x/d5/f2/2c/d5f22cba79815e8709d4816db76fd925.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/9/9b/Gucci_logo.png",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Dior_Logo_2022.svg/1200px-Dior_Logo_2022.svg.png",
+            "https://upload.wikimedia.org/wikipedia/en/thumb/9/92/Chanel_logo_interlocking_cs.svg/1200px-Chanel_logo_interlocking_cs.svg.png",
+            "https://upload.wikimedia.org/wikipedia/commons/c/cb/Louis_Vuitton_LV_logo.png",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Fendi_logo.svg/1200px-Fendi_logo.svg.png"
+
+
         ]);
 
         return () => {

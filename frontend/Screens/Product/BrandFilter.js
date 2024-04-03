@@ -15,12 +15,12 @@ const BrandFilter = (props) => {
                     <TouchableOpacity
                         key={1}
                         onPress={() => {
-                            props.brandFilter('all'), props.setActive(-1)
+                            props.brandFilter('All'), props.setActive(-1)
                         }}
                     >
                         <Badge style={[styles.center, { margin: 4 },
                         props.active === -1 ? styles.active : styles.inactive]} colorScheme="info" >
-                            <Text style={{ color: 'white' }}>all</Text>
+                            <Text style={{ color: 'white', fontWeight: 'bold' }}>All</Text>
                         </Badge>
                     </TouchableOpacity>
                     {props.brands.map((item) => (
@@ -37,7 +37,7 @@ const BrandFilter = (props) => {
                                 props.active == props.brands.indexOf(item) ? styles.active : styles.inactive
                                 ]}
                             >
-                                <Text style={{ color: 'white' }}>{item.name}</Text>
+                                <Text style={{ color: 'white',  fontWeight: 'bold' }}>{item.name}</Text>
                             </Badge>
                         </TouchableOpacity>
                     ))}
