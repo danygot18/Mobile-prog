@@ -37,22 +37,22 @@ const Products = (props) => {
                 style={styles.listHeader}
             >
                 <View style={styles.headerItem}>
-                <Text style={{ fontWeight: '600' }}>Images</Text>
+                    <Text style={{ fontWeight: '600' }}>Images</Text>
                 </View>
                 <View style={styles.headerItem}>
-                <Text style={{ fontWeight: '600' }}>Name</Text>
+                    <Text style={{ fontWeight: '600' }}>Name</Text>
                 </View>
                 <View style={styles.headerItem}>
                     <Text style={{ fontWeight: '600' }}>Brand</Text>
                 </View>
-  
+
                 <View style={styles.headerItem}>
                     <Text style={{ fontWeight: '600' }}>Price</Text>
                 </View>
                 <View style={styles.headerItem}>
                     <Text style={{ fontWeight: '600' }}>Stock</Text>
                 </View>
-               
+
             </View>
         )
     }
@@ -126,7 +126,7 @@ const Products = (props) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.buttonContainer}
-                style={styles.scrollView} 
+                style={styles.scrollView}
             >
                 <View style={styles.buttonContainer}>
                 <EasyButton
@@ -134,38 +134,41 @@ const Products = (props) => {
                         secondary
                         medium
                         onPress={() => navigation.navigate("AdminCharts")}
+                        style={{ backgroundColor: "black", marginRight: 10, marginBottom: 5 }}
                     >
                         <Icon name="line-chart" size={18} color="white" />
                         <Text style={styles.buttonText}>Charts</Text>
                     </EasyButton>
                     <EasyButton
-                        secondary
                         medium
                         onPress={() => navigation.navigate("AdminOrderList")}
+                        style={{ backgroundColor: "black", marginRight: 10, marginBottom: 5 }}
                     >
                         <Icon name="bars" size={18} color="white" />
                         <Text style={styles.buttonText}>Orders</Text>
                     </EasyButton>
+                    
+
                     <EasyButton
-                        secondary
                         medium
                         onPress={() => navigation.navigate("ProductList")}
+                        style={{ backgroundColor: "black", marginRight: 10, marginBottom: 5 }}
                     >
                         <Icon name="shopping-bag" size={18} color="white" />
                         <Text style={styles.buttonText}>Products</Text>
                     </EasyButton>
                     <EasyButton
-                        secondary
                         medium
                         onPress={() => navigation.navigate("Brands")}
+                        style={{ backgroundColor: "black", marginRight: 10, marginBottom: 5 }}
                     >
                         <Icon name="database" size={18} color="white" />
                         <Text style={styles.buttonText}>Brands</Text>
                     </EasyButton>
                     <EasyButton
-                        secondary
                         medium
-                        onPress={() => navigation.navigate("UserList")}
+                        onPress={() => navigation.navigate("AdminCharts")}
+                        style={{ backgroundColor: "black", marginBottom: 5 }}
                     >
                         <Icon name="user" size={18} color="white" />
                         <Text style={styles.buttonText}>Users</Text>
@@ -180,6 +183,7 @@ const Products = (props) => {
             <Searchbar width="80%"
                 style={styles.searchBar} // Apply the Searchbar style
                 placeholder="Search"
+                
                 onChangeText={(text) => searchProduct(text)}
             />
             {loading ? (
@@ -230,7 +234,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         paddingHorizontal: 10,
         flexWrap: "wrap",
-    },    
+    },
     buttonText: {
         marginLeft: 4,
         color: 'white'
@@ -244,6 +248,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center', // Center the Searchbar
         marginTop: 10, // Add some top margin to the Searchbar
         marginBottom: 10,
+        backgroundColor: "white-gray"
     },
     flatList: {
         flex: 1 // Ensure the FlatList occupies all available space vertically

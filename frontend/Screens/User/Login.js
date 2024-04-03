@@ -69,7 +69,7 @@ const Login = ({ navigation }) => {
       }}
     >
       <Image
-        source={require("frontend/assets/aliba-bag.png")}
+        source={require("frontend/assets/aliba-bag-2.png")}
         style={{ width: 180, height: 180, marginRight: 10 }}
       />
 
