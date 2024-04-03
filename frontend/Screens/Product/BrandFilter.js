@@ -20,7 +20,7 @@ const BrandFilter = (props) => {
                     >
                         <Badge style={[styles.center, { margin: 4 },
                         props.active === -1 ? styles.active : styles.inactive]} colorScheme="info" >
-                            <Text style={{ color: 'black' }}>all</Text>
+                            <Text style={{ color: 'white' }}>all</Text>
                         </Badge>
                     </TouchableOpacity>
                     {props.brands.map((item) => (
@@ -56,10 +56,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     active: {
-        backgroundColor: '#03bafc'
+        backgroundColor: 'black'
     },
     inactive: {
-        backgroundColor: '#a0e1eb'
+        backgroundColor: '#666' // lighter shade of black
     }
 })
 

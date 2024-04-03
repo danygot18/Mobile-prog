@@ -19,13 +19,15 @@ const ProductCard = (props) => {
     console.log(images)
     return (
         <View style={styles.container}>
-            <Image 
-            style={styles.image}
-            resizeMode="contain"
-            source={{uri: images[0] ? 
-                images[0] : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png'}}
+            <Image
+                style={styles.image}
+                resizeMode="contain"
+                source={{
+                    uri: images[0] ?
+                        images[0] : 'https://cdn.pixabay.com/photo/2012/04/01/17/29/box-23649_960_720.png'
+                }}
             />
-            <View style={styles.card}/>
+            <View style={styles.card} />
             <Text style={styles.title}>
                 {name.length > 15 ? name.substring(0, 15 - 3)
                     + '...' : name
@@ -33,21 +35,22 @@ const ProductCard = (props) => {
             </Text>
             <Text style={styles.price}>${price}</Text>
 
-            { countInStock > 0 ? (
+            {countInStock > 0 ? (
                 <View style={{ marginBottom: 60 }}>
-                    <Button 
-                    title={'Add'} 
-                    color={'green'}
-                    onPress={() => {
-                        dispatch(addToCart({ ...props, quantity: 1, })), 
-                        Toast.show({
-                            topOffset: 60,
-                            type: "success",
-                            text1: `${name} added to Cart`,
-                            text2: "Go to your cart to complete order"
-                        })
-                    }}
-                    > </Button>
+                    <Button
+                        title={'Add'}
+                        color={'black'}
+                        onPress={() => {
+                            dispatch(addToCart({ ...props, quantity: 1 })),
+                                Toast.show({
+                                    topOffset: 60,
+                                    type: "success",
+                                    text1: `${name} added to Cart`,
+                                    text2: "Go to your cart to complete order"
+                                })
+                        }}
+                        style={styles.addButton} // Apply the custom button style
+                    />
                 </View>
             ) : <Text style={{ marginTop: 20 }}>Currently Unavailable</Text>}
         </View>
