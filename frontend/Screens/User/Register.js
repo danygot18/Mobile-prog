@@ -157,8 +157,9 @@ const Register = (props) => {
       <FormContainer
         title={
           <Text style={{ fontWeight: "bold", fontFamily: "Roboto" }}>
-            Register
+            Registration
           </Text>
+          
         }
       >
         {launchCam ? (
@@ -224,55 +225,60 @@ const Register = (props) => {
         <View style={styles.buttonGroup}>
           {error ? <Error message={error} /> : null}
         </View>
-        <View style={{ marginBottom: 10, width: "40%" }}>
-          <Button
-            variant={"ghost"}
-            onPress={() => register()}
-            style={{
-              backgroundColor: "black",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              paddingHorizontal: 10,
-              width: "100%",
-            }}
-          >
-            <MaterialIcons
-              name="person-add"
-              size={24}
-              color="white"
-              style={{ marginRight: 5 }}
-            />
-            <Text style={{ color: "white", fontFamily: "Roboto" }}>
-              Register
-            </Text>
-          </Button>
-        </View>
+        
+        <View style={{ flexDirection: "row" }}>
+  <View style={{ marginRight: 10, width: "40%" }}>
+    <Button
+      variant={"ghost"}
+      onPress={() => register()}
+      style={{
+        backgroundColor: "black",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingHorizontal: 10,
+        width: "100%",
+      }}
+    >
+      <MaterialIcons
+        name="how-to-reg"
+        size={24}
+        color="white"
+        style={{ marginRight: 5, alignSelf: 'center' }}
+      />
+      <Text style={{ color: "white", fontFamily: "Roboto" }}>
+        Register
+      </Text>
+    </Button>
+  </View>
 
-        <View style={{ marginBottom: 10, width: "40%" }}>
-          <Button
-            variant={"ghost"}
-            onPress={() => navigation.navigate("Login")}
-            style={{
-              backgroundColor: "black",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              paddingHorizontal: 10,
-              width: "100%",
-            }}
-          >
-            <MaterialIcons
-              name="arrow-back"
-              size={24}
-              color="white"
-              style={{ marginRight: 5 }}
-            />
-            <Text style={{ color: "white", fontFamily: "Roboto" }}>
-              Back to Login
-            </Text>
-          </Button>
-        </View>
+  <View style={{ width: "30%" }}>
+    <Button
+      variant={"ghost"}
+      onPress={() => navigation.navigate("Login")}
+      style={{
+        backgroundColor: "black",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingHorizontal: 10,
+        width: "100%",
+      }}
+    >
+      <MaterialIcons
+        name="login"
+        size={24}
+        color="white"
+        
+        style={{ marginRight: 5, alignSelf: 'center' }}
+      />
+      <Text style={{ color: "white", fontFamily: "Roboto" }}>
+        Login
+      </Text>
+    </Button>
+  </View>
+</View>
+
       </FormContainer>
     </KeyboardAwareScrollView>
   );
