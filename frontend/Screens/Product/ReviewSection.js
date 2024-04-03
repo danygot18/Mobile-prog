@@ -9,7 +9,7 @@ import {
   ScrollView,
   Modal,
   TouchableHighlight,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import axios from "axios";
 import baseURL from "../../assets/common/baseUrl";
@@ -30,13 +30,12 @@ const ReviewSection = ({ product, token }) => {
 
   const user = JSON.parse(SyncStorage.get("user"));
 
-
   const fetchReviewsAndCheckReviewStatus = async () => {
     try {
       const response = await axios.get(`${baseURL}/reviews?id=${product._id}`);
       setReviews(response.data);
       // Check if the user has already reviewed the current product
-      if (response.data.some(review => review.user._id === user._id)) {
+      if (response.data.some((review) => review.user._id === user._id)) {
         setHasReviewed(true);
       }
     } catch (error) {
@@ -47,7 +46,6 @@ const ReviewSection = ({ product, token }) => {
   useEffect(() => {
     fetchReviewsAndCheckReviewStatus();
   }, []);
-
 
   const handleIncrementRating = () => {
     if (rating < 5) {
@@ -60,6 +58,21 @@ const ReviewSection = ({ product, token }) => {
       setRating(rating - 1);
     }
   };
+  const renderStars = (ratingValue) => {
+    let stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <TouchableHighlight key={i} onPress={() => setEditedRating(i)}>
+          <Ionicons
+            name={i <= ratingValue ? "star" : "star-outline"}
+            size={24}
+            color="orange"
+          />
+        </TouchableHighlight>
+      );
+    }
+    return stars;
+  };
 
   const handleReviewSubmit = async () => {
     try {
@@ -67,7 +80,7 @@ const ReviewSection = ({ product, token }) => {
       const reviewData = {
         product: product._id,
         user: user._id, // Include the user ID in the review data
-        rating,
+        rating: editedRating, // Use editedRating instead of rating
         comments,
       };
 
@@ -79,7 +92,7 @@ const ReviewSection = ({ product, token }) => {
       });
 
       console.log("Review submitted successfully:", response.data);
-      setRating(1); // Reset rating to 1 after submission
+      setEditedRating(1); // Reset editedRating to 1 after submission
       setComments(""); // Clear comments after submission
       fetchReviewsAndCheckReviewStatus();
     } catch (error) {
@@ -113,7 +126,7 @@ const ReviewSection = ({ product, token }) => {
 
       console.log("Review updated successfully:", response.data);
       setEditModalVisible(false);
-      fetchReviewsAndCheckReviewStatus();// Refresh reviews after updating
+      fetchReviewsAndCheckReviewStatus(); // Refresh reviews after updating
     } catch (error) {
       console.error("Error updating review:", error);
     }
@@ -143,71 +156,81 @@ const ReviewSection = ({ product, token }) => {
   };
 
   const toggleMenuVisible = (reviewId) => {
-    setMenuVisible(prevState => ({
+    setMenuVisible((prevState) => ({
       ...prevState,
-      [reviewId]: !prevState[reviewId]
+      [reviewId]: !prevState[reviewId],
     }));
   };
 
-  const renderStars = () => {
-    let stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <TouchableHighlight key={i} onPress={() => setRating(i)}>
-          <Ionicons name={i <= rating ? 'star' : 'star-outline'} size={24} color="orange" />
-        </TouchableHighlight>
-      );
-    }
-    return stars;
-  };
-
   return (
-    <TouchableOpacity style={styles.container} onPress={() => setMenuVisible(false)}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => setMenuVisible(false)}
+    >
       <ScrollView>
         <View>
           <Text style={styles.title}>Reviews</Text>
           {reviews.map((review, index) => (
             <View key={index} style={styles.reviewContainer}>
               <View style={styles.avatarContainer}>
-                <Image style={styles.avatar} source={{ uri: review.user.image }} />
+                <Image
+                  style={styles.avatar}
+                  source={{ uri: review.user.image }}
+                />
               </View>
               <View style={styles.commentContainer}>
                 <View style={styles.header}>
-                <Text style={styles.userName}>{review.user.name}</Text>
                   <Text style={styles.userName}>{review.user.name}</Text>
-                  
+                  <Text style={styles.userName}>
+                    {renderStars(review.rating)}
+                  </Text>
+
                   {user._id === review.user._id && (
                     <View style={styles.buttonContainer}>
                       <TouchableHighlight
                         style={[styles.button, styles.ellipsisButton]}
                         onPress={() => toggleMenuVisible(review._id)}
                       >
-                        <Ionicons name="ellipsis-horizontal" size={24} color="black" />
+                        <Ionicons
+                          name="ellipsis-horizontal"
+                          size={24}
+                          color="black"
+                        />
                       </TouchableHighlight>
                     </View>
                   )}
                 </View>
-                
+
                 <Text>Comment: {review.comments}</Text>
                 {/* Render menu if visible */}
                 {menuVisible[review._id] && (
-                  
                   // Render menu if visible for this specific review
                   <View style={styles.menu}>
-                    
                     <TouchableHighlight
                       style={[styles.menuItem, styles.editButton]}
                       onPress={() =>
-                        handleEditModalOpen(review._id, review.rating, review.comments)
+                        handleEditModalOpen(
+                          review._id,
+                          review.rating,
+                          review.comments
+                        )
                       }
                     >
-                      <Ionicons name="ios-create-outline" size={24} color="black" />
+                      <Ionicons
+                        name="ios-create-outline"
+                        size={24}
+                        color="black"
+                      />
                     </TouchableHighlight>
                     <TouchableHighlight
                       style={[styles.menuItem, styles.deleteButton]}
                       onPress={() => handleDeleteReview(review._id)}
                     >
-                      <Ionicons name="ios-trash-outline" size={24} color="red" />
+                      <Ionicons
+                        name="ios-trash-outline"
+                        size={24}
+                        color="red"
+                      />
                     </TouchableHighlight>
                   </View>
                 )}
@@ -219,7 +242,7 @@ const ReviewSection = ({ product, token }) => {
             <>
               <Text style={styles.title}>Leave a Review:</Text>
               <View style={styles.ratingContainer}>
-                {renderStars()}
+                {renderStars(editedRating)}
               </View>
               <TextInput
                 style={styles.input}
@@ -248,7 +271,7 @@ const ReviewSection = ({ product, token }) => {
               <View style={styles.modalView}>
                 <Text style={styles.modalTitle}>Edit Review</Text>
                 <View style={styles.modalRatingContainer}>
-                  {renderStars()}
+                  {renderStars(editedRating)}
                 </View>
                 <TextInput
                   style={styles.modalInput}
@@ -266,7 +289,6 @@ const ReviewSection = ({ product, token }) => {
       </ScrollView>
     </TouchableOpacity>
   );
-
 };
 
 const styles = StyleSheet.create({
@@ -372,14 +394,14 @@ const styles = StyleSheet.create({
   },
   menuBackground: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background to cover the screen
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background to cover the screen
     zIndex: 0, // Place behind the menu
   },
   menu: {
-    position: 'absolute',
+    position: "absolute",
     top: -40, // Adjust the distance from the ellipsis icon
     right: 10,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
     padding: 10,
     shadowColor: "#000",
