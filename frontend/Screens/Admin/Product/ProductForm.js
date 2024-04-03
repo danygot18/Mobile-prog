@@ -140,7 +140,7 @@ const ProductForm = (props) => {
                 setImage([])
                 navigation.navigate("Products")
             })
-            .catch((errror) => console.log(error.response))
+            .catch((error) => console.log(error.response))
 
         // if (
         //     name === "" ||

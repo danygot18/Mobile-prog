@@ -138,7 +138,6 @@ const UpdateUser = ({ route, navigation }) => {
         name="email"
         id="email"
         value={email}
-        keyboardType={"numeric"}
         onChangeText={(text) => setEmail(text)}
       />
       {/* <Input

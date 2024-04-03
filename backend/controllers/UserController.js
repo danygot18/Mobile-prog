@@ -155,7 +155,7 @@ exports.updateUser = async (req, res, next) => {
     const newUserData = {
         name: req.body.name,
         email: req.body.email,
-        role: req.body.role
+        isAdmin: req.body.isAdmin
     }
 
     const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
