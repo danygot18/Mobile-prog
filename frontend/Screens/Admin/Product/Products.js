@@ -37,22 +37,22 @@ const Products = (props) => {
                 style={styles.listHeader}
             >
                 <View style={styles.headerItem}>
-                <Text style={{ fontWeight: '600' }}>Images</Text>
+                    <Text style={{ fontWeight: '600' }}>Images</Text>
                 </View>
                 <View style={styles.headerItem}>
-                <Text style={{ fontWeight: '600' }}>Name</Text>
+                    <Text style={{ fontWeight: '600' }}>Name</Text>
                 </View>
                 <View style={styles.headerItem}>
                     <Text style={{ fontWeight: '600' }}>Brand</Text>
                 </View>
-  
+
                 <View style={styles.headerItem}>
                     <Text style={{ fontWeight: '600' }}>Price</Text>
                 </View>
                 <View style={styles.headerItem}>
                     <Text style={{ fontWeight: '600' }}>Stock</Text>
                 </View>
-               
+
             </View>
         )
     }
@@ -126,47 +126,47 @@ const Products = (props) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.buttonContainer}
-                style={styles.scrollView} 
+                style={styles.scrollView}
             >
                 <View style={styles.buttonContainer}>
                     <EasyButton
-                        secondary
                         medium
                         onPress={() => navigation.navigate("AdminOrderList")}
+                        style={{ backgroundColor: "black", marginRight: 10, marginBottom: 10 }}
                     >
                         <Icon name="bars" size={18} color="white" />
                         <Text style={styles.buttonText}>Orders</Text>
                     </EasyButton>
                     <EasyButton
-                        secondary
                         medium
                         onPress={() => navigation.navigate("UserList")}
+                        style={{ backgroundColor: "black", marginRight: 10, marginBottom: 10 }}
                     >
                         <Icon name="user" size={18} color="white" />
                         <Text style={styles.buttonText}>Users</Text>
                     </EasyButton>
 
                     <EasyButton
-                        secondary
                         medium
                         onPress={() => navigation.navigate("ProductList")}
+                        style={{ backgroundColor: "black", marginRight: 10, marginBottom: 10 }}
                     >
                         <Icon name="shopping-bag" size={18} color="white" />
                         <Text style={styles.buttonText}>Products</Text>
                     </EasyButton>
                     <EasyButton
-                        secondary
                         medium
                         onPress={() => navigation.navigate("Brands")}
+                        style={{ backgroundColor: "black", marginRight: 10, marginBottom: 10 }}
                     >
                         <Icon name="database" size={18} color="white" />
                         <Text style={styles.buttonText}>Brands</Text>
                     </EasyButton>
 
                     <EasyButton
-                        secondary
                         medium
                         onPress={() => navigation.navigate("AdminCharts")}
+                        style={{ backgroundColor: "black", marginBottom: 10 }}
                     >
                         <Icon name="line-chart" size={18} color="white" />
                         <Text style={styles.buttonText}>Charts</Text>
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         paddingHorizontal: 10,
         flexWrap: "wrap",
-    },    
+    },
     buttonText: {
         marginLeft: 4,
         color: 'white'
