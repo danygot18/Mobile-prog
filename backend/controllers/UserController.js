@@ -152,19 +152,43 @@ exports.deleteUser = async (req, res, next) => {
     })
 }
 exports.updateUser = async (req, res, next) => {
-    const newUserData = {
-        name: req.body.name,
-        email: req.body.email,
-        isAdmin: req.body.isAdmin
+    try {
+        const userId = req.params.id;
+
+        let user = await User.findById(userId);
+        if (!user) return res.status(404).send('Brand not found');
+
+        if (req.body.name) user.name = req.body.name;
+        if (req.body.email) user.email = req.body.email;
+        if (req.body.isAdmin) user.isAdmin = req.body.isAdmin;
+
+        user = await user.save()
+        
+        if (!user) return res.status(400).send('The User could not be updated');
+        res.send(user);
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+        console.log(error);
+
     }
-
-    const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
-        new: true,
-        runValidators: true,
-        // useFindAndModify: false
-    })
-
-    return res.status(200).json({
-        success: true
-    })
+    
+    // const newUserData = {
+    //     name: req.body.name,
+    //     email: req.body.email,
+    //     isAdmin: req.body.isAdmin
+        
+    // }
+    
+    // const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+        
+    //     new: true,
+    //     runValidators: true,
+    //     // useFindAndModify: false
+       
+    // })
+    
+    // return res.status(200).json({
+    //     success: true
+        
+    // })
 }

@@ -149,6 +149,18 @@ const ReviewSection = ({ product, token }) => {
     }));
   };
 
+  const renderStars = () => {
+    let stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <TouchableHighlight key={i} onPress={() => setRating(i)}>
+          <Ionicons name={i <= rating ? 'star' : 'star-outline'} size={24} color="orange" />
+        </TouchableHighlight>
+      );
+    }
+    return stars;
+  };
+
   return (
     <TouchableOpacity style={styles.container} onPress={() => setMenuVisible(false)}>
       <ScrollView>
@@ -161,7 +173,9 @@ const ReviewSection = ({ product, token }) => {
               </View>
               <View style={styles.commentContainer}>
                 <View style={styles.header}>
+                <Text style={styles.userName}>{review.user.name}</Text>
                   <Text style={styles.userName}>{review.user.name}</Text>
+                  
                   {user._id === review.user._id && (
                     <View style={styles.buttonContainer}>
                       <TouchableHighlight
@@ -173,11 +187,14 @@ const ReviewSection = ({ product, token }) => {
                     </View>
                   )}
                 </View>
+                
                 <Text>Comment: {review.comments}</Text>
                 {/* Render menu if visible */}
                 {menuVisible[review._id] && (
+                  
                   // Render menu if visible for this specific review
                   <View style={styles.menu}>
+                    
                     <TouchableHighlight
                       style={[styles.menuItem, styles.editButton]}
                       onPress={() =>
@@ -202,9 +219,7 @@ const ReviewSection = ({ product, token }) => {
             <>
               <Text style={styles.title}>Leave a Review:</Text>
               <View style={styles.ratingContainer}>
-                <Button title="-" onPress={handleDecrementRating} />
-                <Text>{rating}</Text>
-                <Button title="+" onPress={handleIncrementRating} />
+                {renderStars()}
               </View>
               <TextInput
                 style={styles.input}
@@ -233,9 +248,7 @@ const ReviewSection = ({ product, token }) => {
               <View style={styles.modalView}>
                 <Text style={styles.modalTitle}>Edit Review</Text>
                 <View style={styles.modalRatingContainer}>
-                  <Button title="-" onPress={() => setEditedRating(Math.max(1, editedRating - 1))} />
-                  <Text>{editedRating}</Text>
-                  <Button title="+" onPress={() => setEditedRating(Math.min(5, editedRating + 1))} />
+                  {renderStars()}
                 </View>
                 <TextInput
                   style={styles.modalInput}

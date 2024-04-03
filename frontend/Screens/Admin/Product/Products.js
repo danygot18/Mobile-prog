@@ -129,6 +129,15 @@ const Products = (props) => {
                 style={styles.scrollView} 
             >
                 <View style={styles.buttonContainer}>
+                <EasyButton
+                    
+                        secondary
+                        medium
+                        onPress={() => navigation.navigate("AdminCharts")}
+                    >
+                        <Icon name="line-chart" size={18} color="white" />
+                        <Text style={styles.buttonText}>Charts</Text>
+                    </EasyButton>
                     <EasyButton
                         secondary
                         medium
@@ -137,15 +146,6 @@ const Products = (props) => {
                         <Icon name="bars" size={18} color="white" />
                         <Text style={styles.buttonText}>Orders</Text>
                     </EasyButton>
-                    <EasyButton
-                        secondary
-                        medium
-                        onPress={() => navigation.navigate("UserList")}
-                    >
-                        <Icon name="user" size={18} color="white" />
-                        <Text style={styles.buttonText}>Users</Text>
-                    </EasyButton>
-
                     <EasyButton
                         secondary
                         medium
@@ -162,15 +162,19 @@ const Products = (props) => {
                         <Icon name="database" size={18} color="white" />
                         <Text style={styles.buttonText}>Brands</Text>
                     </EasyButton>
-
                     <EasyButton
                         secondary
                         medium
-                        onPress={() => navigation.navigate("AdminCharts")}
+                        onPress={() => navigation.navigate("UserList")}
                     >
-                        <Icon name="line-chart" size={18} color="white" />
-                        <Text style={styles.buttonText}>Charts</Text>
+                        <Icon name="user" size={18} color="white" />
+                        <Text style={styles.buttonText}>Users</Text>
                     </EasyButton>
+
+                    
+                    
+
+                    
                 </View>
             </ScrollView>
             <Searchbar width="80%"

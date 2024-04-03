@@ -147,7 +147,7 @@ const sendOrderNotification = async (email, orderItems, order) => {
     .map((orderItems) => `- ${orderItems.name}: $${orderItems.price} x${orderItems.quantity}`)
     .join("\n");
 
-  mailOptions.text = `Thank you for ordering from Baghub! \n\nLIST OF ITEMS:\n${productText}\n\nOrder Total:₱ ${order.totalPrice}`;
+  mailOptions.text = `Thank you for ordering from Baghub! \n\nLIST OF ITEMS:\n${productText}\n\nOrder Total:₱ ${order.totalPrice}\n\nThank you for ordering \n\nRecipient's Email:${email}`;
 
   //send the email
   try {

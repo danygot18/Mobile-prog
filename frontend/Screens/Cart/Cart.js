@@ -64,12 +64,14 @@ const Cart = () => {
                     </Text>
                 </HStack>
                 <HStack>
-                    <TouchableOpacity onPress={() => dispatch(incrementItemQuantity(item))}>
-                        <Icon name="plus" style={{margin: 10}}  color={"green"} size={25} />
+                    
+                    
+                    <TouchableOpacity onPress={() => dispatch(decrementItemQuantity(item))}>
+                        <Icon name="minus" style={{margin: 10}} color={"grey"} size={25} />
                     </TouchableOpacity>
                     <Text style={{margin: 10}}>{item.quantity}</Text>
-                    <TouchableOpacity onPress={() => dispatch(decrementItemQuantity(item))}>
-                        <Icon name="minus" style={{margin: 10}} color={"red"} size={25} />
+                    <TouchableOpacity onPress={() => dispatch(incrementItemQuantity(item))}>
+                        <Icon name="plus" style={{margin: 10}}  color={"black"} size={25} />
                     </TouchableOpacity>
                 </HStack>
             </Box>
