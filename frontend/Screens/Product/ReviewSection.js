@@ -26,7 +26,7 @@ const ReviewSection = ({ product, token }) => {
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [editedRating, setEditedRating] = useState(0);
   const [editedComments, setEditedComments] = useState("");
-  const [menuVisible, setMenuVisible] = useState(false);
+  const [menuVisible, setMenuVisible] = useState({});
 
   const user = JSON.parse(SyncStorage.get("user"));
 
@@ -34,18 +34,11 @@ const ReviewSection = ({ product, token }) => {
   const fetchReviewsAndCheckReviewStatus = async () => {
     try {
       const response = await axios.get(`${baseURL}/reviews?id=${product._id}`);
-      const orderResponse = await axios.get(`${baseURL}/orders/admin`);
       setReviews(response.data);
       // Check if the user has already reviewed the current product
       if (response.data.some(review => review.user._id === user._id)) {
         setHasReviewed(true);
       }
-      if (orderResponse.data && Array.isArray(orderResponse.data)) {
-        if (orderResponse.data.some(order => order.user === user._id && order.orderItems.some(item => item.id === product._id))) {
-          setHasReviewed(true);
-        }
-      }
-
     } catch (error) {
       console.error("Error fetching reviews:", error);
     }
@@ -54,6 +47,7 @@ const ReviewSection = ({ product, token }) => {
   useEffect(() => {
     fetchReviewsAndCheckReviewStatus();
   }, []);
+
 
   const handleIncrementRating = () => {
     if (rating < 5) {
@@ -119,7 +113,7 @@ const ReviewSection = ({ product, token }) => {
 
       console.log("Review updated successfully:", response.data);
       setEditModalVisible(false);
-      fetchReviewsAndCheckReviewStatus(); // Refresh reviews after updating
+      fetchReviewsAndCheckReviewStatus();// Refresh reviews after updating
     } catch (error) {
       console.error("Error updating review:", error);
     }
@@ -148,6 +142,13 @@ const ReviewSection = ({ product, token }) => {
     setMenuVisible(false);
   };
 
+  const toggleMenuVisible = (reviewId) => {
+    setMenuVisible(prevState => ({
+      ...prevState,
+      [reviewId]: !prevState[reviewId]
+    }));
+  };
+
   return (
     <TouchableOpacity style={styles.container} onPress={() => setMenuVisible(false)}>
       <ScrollView>
@@ -165,7 +166,7 @@ const ReviewSection = ({ product, token }) => {
                     <View style={styles.buttonContainer}>
                       <TouchableHighlight
                         style={[styles.button, styles.ellipsisButton]}
-                        onPress={() => handleEllipsisPress(review._id)}
+                        onPress={() => toggleMenuVisible(review._id)}
                       >
                         <Ionicons name="ellipsis-horizontal" size={24} color="black" />
                       </TouchableHighlight>
@@ -174,7 +175,8 @@ const ReviewSection = ({ product, token }) => {
                 </View>
                 <Text>Comment: {review.comments}</Text>
                 {/* Render menu if visible */}
-                {menuVisible && (
+                {menuVisible[review._id] && (
+                  // Render menu if visible for this specific review
                   <View style={styles.menu}>
                     <TouchableHighlight
                       style={[styles.menuItem, styles.editButton]}
@@ -198,27 +200,25 @@ const ReviewSection = ({ product, token }) => {
 
           {!hasReviewed && (
             <>
-              <View>
-                <Text style={styles.title}>Leave a Review:</Text>
-                <View style={styles.ratingContainer}>
-                  <Button title="-" onPress={handleDecrementRating} />
-                  <Text>{rating}</Text>
-                  <Button title="+" onPress={handleIncrementRating} />
-                </View>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Comments"
-                  value={comments}
-                  onChangeText={(text) => setComments(text)}
-                  multiline={true}
-                  numberOfLines={4}
-                />
-                <Button
-                  title="Submit Review"
-                  onPress={handleReviewSubmit}
-                  disabled={hasReviewed} // Disable the button if the user has already reviewed
-                />
+              <Text style={styles.title}>Leave a Review:</Text>
+              <View style={styles.ratingContainer}>
+                <Button title="-" onPress={handleDecrementRating} />
+                <Text>{rating}</Text>
+                <Button title="+" onPress={handleIncrementRating} />
               </View>
+              <TextInput
+                style={styles.input}
+                placeholder="Comments"
+                value={comments}
+                onChangeText={(text) => setComments(text)}
+                multiline={true}
+                numberOfLines={4}
+              />
+              <Button
+                title="Submit Review"
+                onPress={handleReviewSubmit}
+                disabled={hasReviewed} // Disable the button if the user has already reviewed
+              />
             </>
           )}
 
