@@ -20,7 +20,7 @@ const Item = (props) => {
     return (
         <View style={styles.item}>
             <View>
-                <Text> Name: {props.item.name}</Text>
+                <Text> Name: {props.item.name.substring(0,11)}</Text>
                 <Text> price: ${props.item.price}</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
@@ -39,6 +39,7 @@ const Item = (props) => {
                 >
                     <Text style={{ color: "white", fontWeight: "bold" }}>Delete</Text>
                 </EasyButton>
+                
             </View>
         </View>
     )
